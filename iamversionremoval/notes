@@ -1,0 +1,40 @@
+##############################
+http://www.swag.uwaterloo.ca/bash2py/index.html Docker image: https://hub.docker.com/r/imiell/bash2py/
+
+
+
+https://stackoverflow.com/questions/61986280/aws-iam-how-to-show-describe-policy-statements-using-the-cli
+
+RAW_POLICIES=$(aws iam list-policies **--scope Local** --query Policies[].[Arn,PolicyName,DefaultVersionId])
+POLICIES=$(echo $RAW_POLICIES | tr -d " " | sed 's/\],/\]\n/g')
+for POLICY in $POLICIES
+    do echo $POLICY | cut -d '"' -f 4
+    echo -e "---------------\n"
+    aws iam get-policy-version --version-id $(echo $POLICY | cut -d '"' -f 6) --policy-arn $(echo $POLICY | cut -d '"' -f 2)
+    echo -e "\n-----------------\n"
+done
+
+https://www.trendmicro.com/cloudoneconformity/knowledge-base/aws/IAM/iam-policy-for-administration.html
+
+aws iam list-policies --scope Local --query "Policies[?PolicyName == 'djcom-internal-policy'].Arn"
+aws iam list-policies --scope Local --query "Policies[?PolicyName == 'djcom-internal-policy'].Arn" --output text
+#############################################
+https://stackoverflow.com/questions/62593317/how-to-delete-an-iam-policy-with-multiple-versions-on-the-command-line-with-one
+
+later check: https://registry.terraform.io/providers/hashicorp/aws/3.55.0/docs/data-sources/iam_roles
+https://analyticshut.com/iam-policies-using-python-boto3-and-aws-cli/
+
+setopt shwordsplitfunction iam-list-versions () { aws iam list-policy-versions --query "Versions[?@.IsDefaultVersion == \`false\`].VersionId" --policy-arn $1 --output text}function iam-delete-policy-versions () { iam-list-versions $1 | xargs -n 1 -I{} aws iam delete-
+
+policy-version --policy-arn $1 --version-id {}}function iam-delete-policy () { iam-delete-policy-versions $1 aws iam delete-policy --policy-arn $1}
+aws iam list-policies --scope Local --output text > /tmp/xxx
+POLICIES        arn:aws:iam::510639184942:policy/rtnspoc        1       2021-04-22T16:34:22+00:00       v3      True    /       0       ANPAXNZDXTQXLJIRFWZW7   rtnspoc 2021-04-22T17:02:12+00:00
+[root@ip-10-161-233-146 bin]# aws iam list-policy-versions --query "Versions[?@.IsDefaultVersion == \`false\`].VersionId" --policy-arn arn:aws:iam::510639184942:policy/rtnspoc --output text
+v2      v1
+
+for i in "${!ARR[@]}"; do
+    aws acm describe-certificate --certificate-arn "${ARR[i]//\"}" | jq '. | {CertificateArn: .Certificate.CertificateArn,DomainName: .Certificate.DomainName, Type: .Certificate.Type, ValidationMethod: .Certificate.DomainValidationOptions[0].ValidationMethod, InUseBy: .Certificate.InUseBy}'
+doneaws iam list-policies | jq -r '.Policies[] |select(.PolicyName)| .Arn'
+aws iam list-policies --scope Local | jq -r '.Policies[] |select(.PolicyName)| .Arn'
+* --query Policies[].[Arn,PolicyName,DefaultVersionId])[root@ip-10-161-233-146 bin]# aws iam list-policy-versions --query "Versions[?@.IsDefaultVersion == \`false\`].VersionId" --policy-arn arn:aws:iam::510639184942:policy/rtnspoc --output text
+v3      v2      v1
