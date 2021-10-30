@@ -38,3 +38,71 @@ doneaws iam list-policies | jq -r '.Policies[] |select(.PolicyName)| .Arn'
 aws iam list-policies --scope Local | jq -r '.Policies[] |select(.PolicyName)| .Arn'
 * --query Policies[].[Arn,PolicyName,DefaultVersionId])[root@ip-10-161-233-146 bin]# aws iam list-policy-versions --query "Versions[?@.IsDefaultVersion == \`false\`].VersionId" --policy-arn arn:aws:iam::510639184942:policy/rtnspoc --output text
 v3      v2      v1
+#########################
+arn:aws:iam::510639184942:policy/robinson-test-policy-versions
+https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/iam.html#IAM.Client.get_policy_version
+
+response = client.delete_policy_version(
+    PolicyArn='string',
+    VersionId='string'
+)
+######################################
+http://54.81.86.238/envs/django/lib/python3.8/site-packages/boto/iam/connection.py
+def delete_policy_version(self, policy_arn, version_id):
+    """
+    Delete a policy version.
+
+    :type policy_arn: string
+    :param policy_arn: The ARN of the policy to delete a version from
+
+    :type version_id: string
+    :param version_id: The id of the version to delete
+
+    """
+    params = {'PolicyArn': policy_arn,
+              'VersionId': version_id}
+    return self.get_response('DeletePolicyVersion', params)
+#####################################################
+def list_policy_versions(self, policy_arn, marker=None, max_items=None):
+    """
+    List policy versions.
+
+    :type policy_arn: string
+    :param policy_arn: The ARN of the policy to get versions of
+
+    :type marker: string
+    :param marker: A marker used for pagination (received from previous
+        accesses)
+
+    :type max_items: int
+    :param max_items: Send only max_items; allows paginations
+
+    """
+    params = {'PolicyArn': policy_arn}
+    if marker is not None:
+        params['Marker'] = marker
+    if max_items is not None:
+        params['MaxItems'] = max_items
+    return self.get_response(
+        'ListPolicyVersions',
+        params,
+        list_marker='Versions')
+
+#############
+boto3 youtbe tutoral https://www.youtube.com/watch?v=9occfhrM4gg
+
+> use client mehtod for specific results --versionid's
+(meta.client)
+
+iam_ob=boto3.client('iam')
+print (iam_ob.list_users.())
+
+{'Users': [{'Path': '/', 'UserName': 'devuser', 'UserId': 'AIDASW5AHPOWHA26EWISC', 'Arn': 'arn:aws:iam::186630241196:user/devuser',
+'CreateDate': datetime.datetime(2021, 10, 29, 22, 46, 42, tzinfo=tzlocal())}, {'Path': '/', 'UserName': 'paul.eric.robinson',
+'UserId': 'AIDASW5AHPOWBUZJG6IDV', 'Arn': 'arn:aws:iam::186630241196:user/paul.eric.robinson', 'CreateDate': datetime.datetime(2019, 12, 18, 14, 59, 29, tzinfo=tzlocal())}
+
+
+delete_policy_version
+get_policy_version
+list_policy_versions
+set_default_policy_version
