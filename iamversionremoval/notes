@@ -1,3 +1,7 @@
+#############
+https://learn-to-code.workshop.aws/data_types/strings.html
+
+
 ##############################
 http://www.swag.uwaterloo.ca/bash2py/index.html Docker image: https://hub.docker.com/r/imiell/bash2py/
 
@@ -106,3 +110,12 @@ delete_policy_version
 get_policy_version
 list_policy_versions
 set_default_policy_version
+
+Note:  am_ob=boto3.resource('iam') will NOT provide Policy_versions must use iam_ob=boto3.client('iam')
+Key=Policies
+
+working list Policies need to limit scope next
+iam_ob=boto3.client('iam')
+#print (iam_ob.list_policies())
+for each_policy in iam_ob.list_policies()['Policies']:
+    print (each_policy['PolicyName'])
