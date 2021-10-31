@@ -1,5 +1,6 @@
 # iam delete policy versions
 # delete only the customer managed policies versions not AWS policy versions (Scope = 'Local')
+# requires python3 boto3 iam permissions {"iam:ListPolicies","iam:GetPolicyVersion",iam:ListPolicyVersions",iam:CreatePolicyVersion",iam:DeletePolicyVersion"}
 # debug output to be removed
 # robinsonp 10/29/2021
 #
