@@ -32,7 +32,7 @@ setopt shwordsplitfunction iam-list-versions () { aws iam list-policy-versions -
 
 policy-version --policy-arn $1 --version-id {}}function iam-delete-policy () { iam-delete-policy-versions $1 aws iam delete-policy --policy-arn $1}
 aws iam list-policies --scope Local --output text > /tmp/xxx
-POLICIES        arn:aws:iam::510639184942:policy/rtnspoc        1       2021-04-22T16:34:22+00:00       v3      True    /       0       ANPAXNZDXTQXLJIRFWZW7   rtnspoc 2021-04-22T17:02:12+00:00
+POLICIES        arn:aws:iam::510639184942:policy/rtnspoc        1       2021-04-22T16:34:22+00:00       v3      True    /       0       kANPAXNZDXTQXLJIRFWZW7   rtnspoc 2021-04-22T17:02:12+00:00
 [root@ip-10-161-233-146 bin]# aws iam list-policy-versions --query "Versions[?@.IsDefaultVersion == \`false\`].VersionId" --policy-arn arn:aws:iam::510639184942:policy/rtnspoc --output text
 v2      v1
 

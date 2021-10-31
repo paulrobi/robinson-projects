@@ -3,7 +3,6 @@
 import os
 import sys
 
-
 def iamlistversions(iamarn):
   var = raw_input('arn:aws:iam::510639184942:policy/robinson-test-policy-versions')
 #  print "test, var"
