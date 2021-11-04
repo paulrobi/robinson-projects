@@ -119,3 +119,10 @@ iam_ob=boto3.client('iam')
 #print (iam_ob.list_policies())
 for each_policy in iam_ob.list_policies()['Policies']:
     print (each_policy['PolicyName'])
+
+
+    AccountId,AccountName,DestRoleName
+    186630241196,Robinson-Home,nct_cse_prod_tools_role
+
+
+## Play tutorail Next https://www.youtube.com/watch?v=LzYNWme1W6Q
