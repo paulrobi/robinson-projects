@@ -1,0 +1,34 @@
+setup home account role with cross account access from jenkins https://jenkins.ncttools.io/view/Project_Twelve/job/project-twelve-scripts-iam-policy-version/
+nct_cse_prod_tools_role
+
+#Trust Relationship
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::230174683742:root"
+      },
+      "Action": "sts:AssumeRole",
+      "Condition": {}
+    }
+  ]
+}
+
+#Jenkins Job
+node {
+    withAWS(role:'nct_cse_prod_tools_role', externalId: 'terraform_agent_request', roleAccount:"${params.accountId}",duration: 900) {
+
+        stage('Checkout') {
+            git([url: 'git@github.com:newscorp-ghfb/nct-projectTwelve.git',
+            branch:'main', credentialsId: 'nct-projectTwelve'])
+        }
+        stage('Running script') {
+            sh "cd iam_policy_version; python3 ${params.script} ${params.csvfile} ${params.override}"
+        }
+    }
+}
+
+# Reading csv directly into python3
+https://www.youtube.com/watch?v=5CEsJkKhS78
