@@ -1,6 +1,8 @@
 #############
 https://learn-to-code.workshop.aws/data_types/strings.html
 
+### Read & write csv_file
+https://www.youtube.com/watch?v=q5uM4VKywbA
 
 ##############################
 http://www.swag.uwaterloo.ca/bash2py/index.html Docker image: https://hub.docker.com/r/imiell/bash2py/
@@ -125,4 +127,4 @@ for each_policy in iam_ob.list_policies()['Policies']:
     186630241196,Robinson-Home,nct_cse_prod_tools_role
 
 
-## Play tutorail Next https://www.youtube.com/watch?v=LzYNWme1W6Q
+## Play tutorial Next https://www.youtube.com/watch?v=LzYNWme1W6Q
