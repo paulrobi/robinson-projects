@@ -1,0 +1,31 @@
+https://boto3.amazonaws.com/v1/documentation/api/latest/guide/error-handling.html
+https://www.programiz.com/python-programming/exceptions
+https://www.youtube.com/watch?v=brICUKrzVR0&list=PL98qAXLA6afuh50qD2MdAj3ofYjZR_Phn&t=305s
+--> https://pythonprogramming.net/handling-exceptions-try-except-python-3/
+
+numerator = 10
+denominator = 0
+
+try:
+   numerator = int(input("Enter numerator: "))
+   denominator = int(input("Enter denominator: "))
+   result = numerator / denominator
+   print(result)
+except:
+   print("denominator can not be zero please try again")
+
+
+print("Program ends")
+
+
+import botocore.exceptions
+for key, value in sorted(botocore.exceptions.__dict__.items()):
+    if isinstance(value, type):
+        print(key)
+
+        (env) (env) [root@ip-172-30-0-113 ~]# python3 xx|grep Clien
+        ClientError
+        HTTPClientError
+        UnknownClientMethodError
+
+        botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::186630241196:user/paulv2 is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::186630241195:role/nct_cse_prod_tools_role

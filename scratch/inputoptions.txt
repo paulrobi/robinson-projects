@@ -1,0 +1,16 @@
+'''
+parser.add_argument(
+    '--accountid',
+    dest="DestAccountId",
+    type=str,
+    help="Destination AccountID",
+    required=True
+    )
+parser.add_argument(
+    '--assumerole',
+    dest="DestAssumeRole",
+    type=str,
+    help="IAM Role to Assume in Destination Account",
+    required=True
+    )
+'''
