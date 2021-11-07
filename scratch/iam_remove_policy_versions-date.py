@@ -20,7 +20,7 @@ date_format_str = "%Y%m%d-%H%M%S"
 
 iam_ob = boto3.client("iam")
 date_now = datetime.now()
-days_to_delete = 45
+days_to_delete = 30
 
 boto_sts=boto3.client('sts')
 
@@ -28,7 +28,7 @@ action = "debug"
 dryrun = "True"
 
 outputfile = open('output-iam_policy_versions-outout.csv', 'w')
-output_header = "AccountId,AccountName,PolicyName,IsDefaultVersion,PolicyCreateDate,ProfileVersion,Action,DryRun,AssumedRoleError\n"
+output_header = "AccountId,AccountName,PolicyName,IsDefaultVersion,PolicyAge,PolicyCreateDate,ProfileVersion,Action,DryRun,AssumedRoleError\n"
 outputfile.write(output_header)
 
 with open('iam_policy_versions-template.csv', 'r') as csv_file_input:
@@ -44,7 +44,6 @@ with open('iam_policy_versions-template.csv', 'r') as csv_file_input:
                 RoleSessionName='iam_pol_ver_session',
                 DurationSeconds=900
              )
-            assumerole_error = "Success"
             newsession_id = stsresponse["Credentials"]["AccessKeyId"]
             newsession_key = stsresponse["Credentials"]["SecretAccessKey"]
             newsession_token = stsresponse["Credentials"]["SessionToken"]
@@ -70,20 +69,27 @@ with open('iam_policy_versions-template.csv', 'r') as csv_file_input:
                     else:
                          policy_isdefault="False"
                          if delta_time.days >= days_to_delete:
-                             pass
+                            action="delete"
                          else:
-                             print("Generic Pass")
+                            action="skip"
+                            print("Generic Pass")
 
-                output_row = "{},{},{},{},{},{},{},{},{}\n".format(
+                assumerole_error = "SuccessAssumeRole"
+                output_row = "{},{},{},{},{},{},{},{},{},{}\n".format(
                             dest_account_id, dest_account_name, policy_name,
                             policy_isdefault, formatted_policy_create_date, policy_ver['VersionId'],
-                            action,dryrun, assumerole_error
+                            delta_time,action,dryrun, assumerole_error
                  )
                 outputfile.write(output_row)
          except botocore.exceptions.ClientError as e:
-                assumerole_error = "Error"
+                assumerole_error = "ErrorAssumeRole"
+                output_row = "{},{},{},{},{},{},{},{},{},{}\n".format(
+                            dest_account_id, dest_account_name, policy_name,
+                            policy_isdefault, formatted_policy_create_date, policy_ver['VersionId'],
+                            delta_time,action,dryrun, assumerole_error
+                 )
+                outputfile.write(output_row)
                 print("Client Error")
 
-
-###          for line in csv_reader:
-###              csv_writer.writerow(line)
+#file_handle.close()
+#file_handle.close()
