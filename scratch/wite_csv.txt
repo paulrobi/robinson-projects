@@ -57,7 +57,7 @@ for row in csv_reader:
 #print(table)
 file_handle.close()
 
-# Working ########## Working Stage-1. Readinging csv and assigning variables https://www.youtube.com/watch?v=q5uM4VKywbA ###########################
+# Working ########## Working Stage-1. Reading csv and assigning variables https://www.youtube.com/watch?v=q5uM4VKywbA ###########################
 with open('iam_policy_versions-template.csv', 'r') as csv_file_input:
      csv_reader = csv.DictReader(csv_file_input)
 
