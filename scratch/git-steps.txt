@@ -1,0 +1,59 @@
+*** Github config file for GIT_SSH_COMMAND
+https://docs.github.com/en/developers/overview/managing-deploy-keys
+$$$$$$$$$
+issuesfix:
+GIT_SSH_COMMAND="ssh -F /test/config" git pull origin main --rebase
+GIT_SSH_COMMAND="ssh -F /test/config" git push origin main
+cp hello.py test2.py
+git add test2.py
+git commit -m "Test2 commit From OS"
+GIT_SSH_COMMAND="ssh -F /test/config" git push origin main
+
+
+$$$ add single file come back here
+https://stackoverflow.com/questions/49644867/how-to-push-one-file-folder-to-git-without-cloning-pulling-whole-project
+git init
+git checkout -b dev4
+git remote add <remotename> <git url>
+git add .
+git commit -m "commit message"
+git push <remotename> dev4
+
+### below Works ###
+git config --global user.name "Jenkins"
+git config --global user.email "jenkinstest@dowjones.com"
+git config --global push.default matching
+git config --global alias.co checkout
+git config --global init.defaultBranch main
+git init
+#git remote add origin git@github.com:paulrobi/nct-reports-test.git
+git remote add origin git@github.com:newscorp-ghfb/nct-projectTwelve-reports.git
+git add hello.py
+git commit -m "initial commit"
+
+GIT_SSH_COMMAND="ssh -F /test/config" git push origin main
+or
+GIT_SSH_COMMAND="ssh -F /test/config" git add hi.py
+GIT_SSH_COMMAND="ssh -F /test/config" git push
+############################################
+
+>>> May need to add
+git config --global --ff-only
+
+
+Generic Steps
+echo "# nct-projectTwelve-reports" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin git@github.com:newscorp-ghfb/nct-projectTwelve-reports.git
+git push -u origin main
+
+
+https://stackoverflow.com/questions/28291909/gitpython-and-ssh-keys
+from git import Repo
+from git import Git
+git_ssh_identity_file = os.path.join(os.getcwd(),'ssh_key.key')
+git_ssh_cmd = 'ssh -i %s' % git_ssh_identity_file
+Repo.clone_from(repo_url, os.path.join(os.getcwd(), repo_name),env=dict(GIT_SSH_COMMAND=git_ssh_cmd))
