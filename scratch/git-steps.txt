@@ -19,7 +19,7 @@ git add .
 git commit -m "commit message"
 git push <remotename> dev4
 
-### below Works ###
+### below WORKS ###
 git config --global user.name "Jenkins"
 git config --global user.email "jenkinstest@dowjones.com"
 git config --global push.default matching
@@ -27,6 +27,31 @@ git config --global alias.co checkout
 git config --global init.defaultBranch main
 git init
 #git remote add origin git@github.com:paulrobi/nct-reports-test.git
+GIT_SSH_COMMAND="ssh -F /test/config" git clone git@github.com:newscorp-ghfb/nct-projectTwelve-reports.git --depth=1
+cd nct-projectTwelve-reports/iam_policy_versions/
+touch ThisTestFile.txt
+echo test > ThisTestFile.txt
+GIT_SSH_COMMAND="ssh -F /test/config" git commit -m 'Test commit one'
+GIT_SSH_COMMAND="ssh -F /test/config" git push
+(addition test2)
+/bin/rm test.txt
+git rm test.txt
+GIT_SSH_COMMAND="ssh -F /test/config" git push
+
+###
+openssl enc -d -aes-256-ecb -in ${workdirectory}/${encfile} -out ${workdirectory}/${encfile}-unencrypted.txt -K ${s3key}
+daqusermaint.sh:      # provider_password=$(echo -E "${password_entered}" |xargs openssl passwd -crypt)
+openssl aes-256-cbc -a -salt -in secrets.txt -out secrets.txt.enc
+openssl aes-256-cbc -d -a -in secrets.txt.enc -out secrets.txt.new
+gpg --output encrypted.data --symmetric --cipher-algo AES256 un_encrypted.data
+gpg --output un_encrypted.data --decrypt encrypted.data
+XRmQTN5nQxsC37rB
+echo -E "XRmQTN5nQxsC37rB" | gpg -c  --passphrase-fd 0 --batch --yes jenkinspushreports.priv
+echo -E "XRmQTN5nQxsC37rB" | gpg -c  --passphrase-fd 0 --batch --yes jenkinspushreports.priv
+echo -E "XRmQTN5nQxsC37rB" | gpg   --passphrase-fd 0 --batch --yes jenkinspushreports.priv.gpg
+
+###
+
 git remote add origin git@github.com:newscorp-ghfb/nct-projectTwelve-reports.git
 git add hello.py
 git commit -m "initial commit"
