@@ -1,3 +1,7 @@
+unneeded from bash script
+###GIT_SSH_COMMAND="ssh -F $activedir/config" git remote add origin git@github.com:newscorp-ghfb/nct-projectTwelve-reports.git
+
+
 *** Github config file for GIT_SSH_COMMAND
 https://docs.github.com/en/developers/overview/managing-deploy-keys
 $$$$$$$$$
@@ -82,3 +86,11 @@ from git import Git
 git_ssh_identity_file = os.path.join(os.getcwd(),'ssh_key.key')
 git_ssh_cmd = 'ssh -i %s' % git_ssh_identity_file
 Repo.clone_from(repo_url, os.path.join(os.getcwd(), repo_name),env=dict(GIT_SSH_COMMAND=git_ssh_cmd))
+
+
+https://newbedev.com/passing-ssh-options-to-git-clone
+(env) (env) [root@ip-172-30-0-113 iam_policy_versions]# GIT_SSH_COMMAND="ssh -F $activedir/config" git push
+Warning: Permanently added 'github.com,140.82.114.4' (RSA) to the list of known hosts.
+no such identity: .//jenkinspushreports.priv: No such file or directory
+Permission denied (publickey).
+fatal: Could not read from remote repository.
