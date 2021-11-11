@@ -1,0 +1,1 @@
+#https://www.slsmk.com/use-boto3-to-assume-a-role-in-another-aws-account/
