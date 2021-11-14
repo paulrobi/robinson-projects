@@ -1,0 +1,139 @@
+# iam delete policy versions
+# delete only the customer managed policies versions older then $days_to_delete not AWS policy versions (Scope = 'Local')
+# debug output to be removed
+# requires iam role in destination account with trust relationship to jenkins arn:aws:iam::230174683742:root"
+# above iam policy permissions for iam:ListPolicies,iam:GetPolicyVersion,iam:ListPolicyVersions,iam:DeletePolicyVersion
+# robinsonp 11/19/2021
+# 186630241196,Robinson-Home,nct_cse_prod_tools_role
+# DELETE DISABLED
+
+import boto3, botocore
+import subprocess, os, sys, argparse, datetime, time, csv
+from time import mktime
+from datetime import datetime, timedelta
+boto_sts=boto3.client('sts')
+iam_ob = boto3.client("iam")
+date_format_str = "%Y%m%d-%H%M%S"
+
+date_now = datetime.now()
+#days_to_delete = 30
+days_to_delete = 900
+
+
+action = "debug"
+dryrun = "True"
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-c', '--csv_input', default='iam_policy_versions-accounts.csv')
+parser.add_argument('-a', '--action_input', default="ReportOnly")
+parser.add_argument('-e', '--env_input', default="NonProd")
+args = parser.parse_args()
+enviroment = args.env_input
+print (args.action_input)
+print (args.env_input)
+
+# Exit if no input file found
+if os.path.isfile(args.csv_input):
+   pass
+else:
+   sys.exit(f'Inputfile {args.csv_input} does not exist')
+
+
+outputfile = open('iam_policy_versions-output.csv', 'w')
+output_header = "AccountId,AccountEnv,AccountName,PolicyName,IsDefaultVersion,PolicyAge,PolicyCreateDate,ProfileVersion,Action,DryRun,AssumedRoleError\n"
+outputfile.write(output_header)
+
+with open(args.csv_input, 'r') as csv_file_input:
+     csv_reader = csv.DictReader(csv_file_input)
+
+     for line in csv_reader:
+         newsession_token = "None"
+         policy_name = "AssumeRoleError"
+         policy_isdefault = "AssumeRoleError"
+         formatted_policy_create_date = "AssumeRoleError"
+         policy_version = "AssumeRoleError"
+         policy_age = "AssumeRoleError"
+         assumerole_error = "AssumeRoleError"
+
+         dest_account_id = line['AccountId']
+         dest_account_name = line['AccountName']
+         dest_account_env = line['AccountEnv']
+         dest_role_name = line['DestRoleName']
+         #if enviroment == dest_account_env or dest_account_env == "all":
+         if enviroment in dest_account_env or enviroment == 'all':
+            print (f'RUN enviroment={enviroment} dest_account_env={dest_account_env} account={dest_account_name} csvinputenv={dest_account_env} ')
+            try:
+               stsresponse = boto_sts.assume_role(
+                   RoleArn=("arn:aws:iam::{acctnumber}:role/{acctname}".format(acctnumber=dest_account_id, acctname=dest_role_name)),
+                   RoleSessionName='iam_pol_ver_session',
+                   ExternalId='terraform_agent_request',
+                   DurationSeconds=900
+               )
+               newsession_id = stsresponse["Credentials"]["AccessKeyId"]
+               newsession_key = stsresponse["Credentials"]["SecretAccessKey"]
+               newsession_token = stsresponse["Credentials"]["SessionToken"]
+###               print ("newsession_id {}:newsession_key{}:newsession_token{}".format(newsession_id,newsession_key,newsession_token))
+               iam_assumed_client = boto3.client(
+                   'iam',
+                    aws_access_key_id=newsession_id,
+                    aws_secret_access_key=newsession_key,
+                    aws_session_token=newsession_token
+                )
+               response = iam_assumed_client.list_policies( Scope = 'Local' )
+               for iam_policy in response['Policies']:
+                   response = iam_assumed_client.list_policy_versions(
+                       PolicyArn=(iam_policy['Arn'])
+                   )
+                   policy_name=(iam_policy['PolicyName'])
+###                   print("PolicyName: {}".format (policy_name))
+                   for policy_ver in response['Versions']:
+                       policy_version = (policy_ver['VersionId'])
+                       policy_create_date = (policy_ver['CreateDate'])
+                       formatted_policy_create_date = policy_create_date.replace(tzinfo=None)
+                       delta_time = date_now - formatted_policy_create_date
+
+                       if policy_ver['IsDefaultVersion'] is True:
+                            policy_isdefault="True"
+                            action="skip"
+                       else:
+                            policy_isdefault="False"
+                            if delta_time.days >= days_to_delete:
+                               if args.action_input == 'PerformDelete':
+                                  action="deleted"
+#                                  delete = iam_ob.delete_policy_version(
+#                                      PolicyArn=(iam_policy['Arn']),
+#                                      VersionId=policy_ver['VersionId']
+#                                  )
+#                                  print(delete)
+                                  print(f'Deleted {policy_name} {policy_version} {delta_time.days} days')
+                               else:
+                                  action="ReportOnly"
+                            else:
+                               print(f'Would Not Perform Delete To Young {policy_name} {policy_version} {delta_time.days} days')
+                               action="skip"
+
+                   assumerole_error = "SuccessAssumeRole"
+                   policy_age =  delta_time.days
+                   output_row = "{},{},{},{},{},{},{},{},{},{},{}\n".format(
+                               dest_account_id,dest_account_env,dest_account_name,policy_name,
+                               policy_isdefault, policy_age, formatted_policy_create_date, policy_version,
+                               action, dryrun, assumerole_error
+                    )
+                   outputfile.write(output_row)
+            except botocore.exceptions.ClientError as e:
+                   assumerole_error = "ErrorAssumeRole"
+                   policy_age =  delta_time.days
+                   output_row = "{},{},{},{},{},{},{},{},{},{},{}\n".format(
+                               dest_account_id,dest_account_env,dest_account_name,policy_name,
+                               policy_isdefault, policy_age, formatted_policy_create_date, policy_version,
+                               action, dryrun, assumerole_error
+                   )
+                   outputfile.write(output_row)
+         else:
+            print (f'SKIP enviroment={enviroment} dest_account_env={dest_account_env} account={dest_account_name} csvinputenv={dest_account_env} ')
+            continue
+
+outputfile.close()
+
+os.chmod('./gitpushcsvoutput.sh', 0o755)
+subprocess.call("./gitpushcsvoutput.sh", shell=True)

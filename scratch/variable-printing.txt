@@ -1,0 +1,36 @@
+https://www.delftstack.com/howto/python/python-print-variable/
+var1= 123
+var2= 'World'
+print(f'Hello to the {var2} {var1}')
+
+var1= 123
+var2= 'World'
+print('Hello to the {} {}' + var2 + str(var1))
+
+var1= 123
+var2= 'World'
+print("Hello to the {} {}".format(var2,var1))
+
+
+val = None
+if not (val is None):
+    print("proceeding")
+else:
+    print(f'val has value of {val}')
+#if val is None:
+#    print("null")
+
+
+var_c = "hello my name is: {} and {}, bye".format(var_a, var_b)
+var_c = f"hello my name is: {var_a} and {var_b}, bye"
+
+a, b, c, d, e, g, h, i, j = (True,)*9
+f = False
+
+fruits = ["apple", "banana", "cherry"]
+for x in fruits:
+  if x == "banana":
+    continue
+  print(x)
+
+  o
