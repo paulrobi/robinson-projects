@@ -1,0 +1,13 @@
+AccountId,AccountName,AccountEnv,PolicyName,DryRun,AssumeRoleStatus,IsDefaultVersion,Action,ProfileVersion,PolicyAge,PolicyCreateDate
+
+dest_account_id,dest_account_env,dest_account_name,policy_name,
+policy_isdefault, policy_age, formatted_policy_create_date, policy_version,
+action, dryrun, assumerole_error
+)
+
+
+                   output_row = "{},{},{},{},{},{},{},{},{},{},{}\n".format(
+                               dest_account_id,dest_account_name,dest_account_env,policy_name,
+                               dryrun,assumerole_error,policy_isdefault,action,policy_version,policy_age,
+                               formatted_policy_create_date
+                   )
