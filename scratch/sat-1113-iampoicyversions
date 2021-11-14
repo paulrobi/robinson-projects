@@ -17,7 +17,7 @@ date_format_str = "%Y%m%d-%H%M%S"
 
 date_now = datetime.now()
 #days_to_delete = 30
-days_to_delete = 900
+days_to_delete = 10
 
 
 action = "debug"
@@ -61,7 +61,6 @@ with open(args.csv_input, 'r') as csv_file_input:
          dest_role_name = line['DestRoleName']
          #if enviroment == dest_account_env or dest_account_env == "all":
          if enviroment in dest_account_env or enviroment == 'all':
-            print (f'RUN enviroment={enviroment} dest_account_env={dest_account_env} account={dest_account_name} csvinputenv={dest_account_env} ')
             try:
                stsresponse = boto_sts.assume_role(
                    RoleArn=("arn:aws:iam::{acctnumber}:role/{acctname}".format(acctnumber=dest_account_id, acctname=dest_role_name)),
