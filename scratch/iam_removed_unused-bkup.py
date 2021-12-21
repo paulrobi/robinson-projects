@@ -1,3 +1,4 @@
+# updated Thu Dec 16 17:11:47 UTC 2021
 import boto3, botocore
 import subprocess, os, sys, argparse, datetime, time, csv
 from time import mktime
@@ -9,7 +10,6 @@ date_format_str = "%Y%m%d-%H%M%S"
 today = datetime.now()
 days_to_delete = 30
 default_policy_age_min = 30
-MaxdaysSinceUsed = 30
 
 
 action = "debug"
@@ -88,8 +88,6 @@ with open(args.csv_input, 'r') as csv_file_input:
                rolesResponse = iam_assumed_client.list_roles(MaxItems=1000)
                for r in [r for r in rolesResponse['Roles'] if '/aws-service-role/' not in r['Path'] and '/service-role/' not in r['Path']]:
                    jobId = client.generate_service_last_accessed_details(Arn=r['Arn'])['JobId']
-                   rolename=r['RoleName']
-                   #print(f'rolename = {rolename}')
 
                    roleAccessDetails = client.get_service_last_accessed_details(JobId=jobId)
                    jobAttempt = 0
@@ -108,22 +106,11 @@ with open(args.csv_input, 'r') as csv_file_input:
                        if not lastAccessedDates:
                            #report += 'Role {0} has no access history. No action taken.\n'.format( r['Arn'])
                            print(f'{myarn} has no access history in 400days --delete.')
-
-                           attached_policies_response = client.list_attached_role_policies(RoleName=rolename)['AttachedPolicies']
-                           for attached_policies in attached_policies_response:
-                               attached_policy_name=attached_policies['PolicyName']
-                               print(f'policyName={attached_policy_name}')
                        else:
                           roleLastUsed = min(lastAccessedDates)
                           daysSinceUsed = (today - roleLastUsed.replace(tzinfo=None)).days
                           ### add Logic for math to delete if not accessed in X days
-                          if daysSinceUsed >= MaxdaysSinceUsed:
-                             print(f'{myarn} days since used = {daysSinceUsed} greater then {MaxdaysSinceUsed} --delete')
-
-
-                          else:
-                             print(f'{myarn} days since used = {daysSinceUsed} less then {MaxdaysSinceUsed} --skip')
-
+                          print(f'{myarn} days since used = {daysSinceUsed} --skip')
 
 
             except botocore.exceptions.ClientError as e:
