@@ -112,14 +112,23 @@ with open(args.csv_input, 'r') as csv_file_input:
                            attached_policies_response = client.list_attached_role_policies(RoleName=rolename)['AttachedPolicies']
                            for attached_policies in attached_policies_response:
                                attached_policy_name=attached_policies['PolicyName']
-                               print(f'policyName={attached_policy_name}')
+                               attached_policy_arn=attached_policies['PolicyArn']
+                               print(f'PolicyName={attached_policy_name}')
+                               print(f'PolicyName={attached_policy_arn}')
+                               #attached_policy_detach = client.detach_role_policy(RoleName='test-role-delete-1',PolicyArn='arn:aws:iam::186630241196:role/test-role-delete-1')
                        else:
                           roleLastUsed = min(lastAccessedDates)
                           daysSinceUsed = (today - roleLastUsed.replace(tzinfo=None)).days
                           ### add Logic for math to delete if not accessed in X days
                           if daysSinceUsed >= MaxdaysSinceUsed:
                              print(f'{myarn} days since used = {daysSinceUsed} greater then {MaxdaysSinceUsed} --delete')
-
+                             attached_policies_response = client.list_attached_role_policies(RoleName=rolename)['AttachedPolicies']
+                             for attached_policies in attached_policies_response:
+                                 attached_policy_name=attached_policies['PolicyName']
+                                 attached_policy_arn=attached_policies['PolicyArn']
+                                 print(f'PolicyName={attached_policy_name}')
+                                 print(f'PolicyName={attached_policy_arn}')
+                                 #attached_policy_detach = client.detach_role_policy(RoleName='test-role-delete-1',PolicyArn='arn:aws:iam::186630241196:role/test-role-delete-1')
 
                           else:
                              print(f'{myarn} days since used = {daysSinceUsed} less then {MaxdaysSinceUsed} --skip')
