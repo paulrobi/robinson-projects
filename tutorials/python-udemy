@@ -1,0 +1,52 @@
+>>>List
+mylist = [1,1,[1,2]]
+mylist
+[1, 1, [1, 2]]
+x = mylist[2][1]
+x
+2
+
+
+
+>>>Dictionaries
+prices_lookup = {'apples':2.99,'oranges':5.75,'grapes':7.45}
+print (prices_lookup)
+print (prices_lookup['grapes'])
+
+d = {'k1':123,'k2':[0,1,2,3,4],'k3':{'insideKey1':100,'insideKey2':200}}
+print (d)
+print (d['k3']['insideKey2'])
+
+print("NEWLINE")
+x = {'key1':['a','b','c']}
+print(x['key1'][2].upper())
+print(x)
+x = x['key1'][2].upper()
+print(x)
+
+d = {'k1':100,'k2':200}
+d['k3'] = 300
+print(d)
+
+d['k1'] = 'New Value'
+print(d)
+
+# PRINT DICT
+print (d.keys())
+print (d.values())
+print (d.items())
+<<< OUTPUTS
+{'apples': 2.99, 'oranges': 5.75, 'grapes': 7.45}
+7.45
+{'k1': 123, 'k2': [0, 1, 2, 3, 4], 'k3': {'insideKey1': 100, 'insideKey2': 200}}
+200
+NEWLINE
+C
+{'key1': ['a', 'b', 'c']}
+C
+{'k1': 100, 'k2': 200, 'k3': 300}
+{'k1': 'New Value', 'k2': 200, 'k3': 300}
+dict_keys(['k1', 'k2', 'k3'])
+dict_values(['New Value', 200, 300])
+dict_items([('k1', 'New Value'), ('k2', 200), ('k3', 300)])
+d = 
