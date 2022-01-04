@@ -1,3 +1,5 @@
+https://docs.python.org/3/
+
 >>>List
 mylist = [1,1,[1,2]]
 mylist
@@ -49,4 +51,39 @@ C
 dict_keys(['k1', 'k2', 'k3'])
 dict_values(['New Value', 200, 300])
 dict_items([('k1', 'New Value'), ('k2', 200), ('k3', 300)])
-d = 
+d =
+
+For with Dictionary
+d = {'k1':1,'k2':2,'k3':3}
+:
+for item in d.items():
+    print(item)
+Output
+('k1', 1)
+('k2', 2)
+('k3', 3)
+
+
+for key,value in d.items():
+    print(value)
+
+    1
+    2
+    3
+
+    for value in d.values():
+      print(value)
+    1
+    2
+    3
+
+    mykey in {'mykey':345}
+    True
+    d = {'mykey':345}
+    345 in d.values()
+    True
+
+
+functions
+Function coding exercise solutions
+https://docs.google.com/document/d/181AMuP-V5VnSorl_q7p6BYd8mwXWBnsZY_sSPA8trfc/edit
