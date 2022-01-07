@@ -87,3 +87,17 @@ for key,value in d.items():
 functions
 Function coding exercise solutions
 https://docs.google.com/document/d/181AMuP-V5VnSorl_q7p6BYd8mwXWBnsZY_sSPA8trfc/edit
+
+
+KeyWords in fucrions
+def myfunc(*args,**kwargs):
+    print(args)
+    print(kwargs)
+    print('I would like {} {}'.format(args[0],kwargs['food']))
+
+myfunc(10,20,30,fruit='orange',food='eggs',animal='dog')
+
+#Output
+(10, 20, 30)
+{'fruit': 'orange', 'food': 'eggs', 'animal': 'dog'}
+I would like 10 eggs
