@@ -1,10 +1,15 @@
 # Read CSV for acount and Role info
-# assume role for rach account
-#list roles in each account unused within X days
-#for Xdays roles to delete detach policies
-#Delete Role in requested
-#List Policies not accessed
-#Delete Policies
+# assume role for each account
+# -log error on role assume
+# collect roles in each account unused within X days
+# -log roles collected
+# for Xdays roles to delete detach policies
+# -log policies detached
+# Delete Role in requested
+# -log role deleted
+# collect Policies not accessed
+# -log policies not attached and deleted
+# Delete Policies
 
 
 
@@ -18,6 +23,7 @@ client = boto3.client("iam")
 date_format_str = "%Y%m%d-%H%M%S"
 
 date_now = datetime.now()
+maxdays_since_used = 30
 days_to_delete = 30
 default_policy_age_min = 30
 max_days_since_used = 30
@@ -25,7 +31,13 @@ dest_acctnumber="186630241196"
 dest_role_name="nct_cse_prod_tools_role"
 #arn:aws:iam::186630241196:role/nct_cse_prod_tools_role
 
+# create output csv
+outputfile = open('iam_rm_role_policies_output.csv', 'w',newline='')
+csv_write = csv.writer(outputfile,delimiter=',')
+output_header = "AccountId,AccountName,PolicyName,IsDefaultVersion,PolicyAge,PolicyCreateDate,ProfileVersion,Action,DryRun,AssumedRoleError\n"
+outputfile.write(output_header)
 
+# assume role for account function
 def perform_assume_role(account_info):
     stsresponse = boto_sts.assume_role(
       RoleArn=("arn:aws:iam::{}:role/{}".format(dest_acctnumber,dest_role_name)),
@@ -44,6 +56,7 @@ print(f'\n Session Key Main {session_key}')
 print(f'\n Session Token Main {session_token}')
 print('\n\n##########################################')
 
+#list roles in selected account mark those over X days since accessed
 def perform_list_roles(session_id,session_key,session_token):
     iam_assumed_client = boto3.client(
         'iam',
@@ -82,10 +95,10 @@ def perform_list_roles(session_id,session_key,session_token):
                     print(f'PolicyArn={attached_policy_arn}')
             else:
                roleLastUsed = min(lastAccessedDates)
-               daysSinceUsed = (today - roleLastUsed.replace(tzinfo=None)).days
+               days_since_used = (date_now - roleLastUsed.replace(tzinfo=None)).days
                ### add Logic for math to delete if not accessed in X days
-               if daysSinceUsed >= MaxdaysSinceUsed:
-                    print(f'{myarn} days since used = {daysSinceUsed} greater then {MaxdaysSinceUsed} --delete')
+               if days_since_used >= maxdays_since_used:
+                    print(f'{myarn} days since used = {days_since_used} greater then {maxdays_since_used} --delete')
                     attached_policies_response = client.list_attached_role_policies(RoleName=rolename)['AttachedPolicies']
                     for attached_policies in attached_policies_response:
                         attached_policy_name=attached_policies['PolicyName']
@@ -96,6 +109,6 @@ def perform_list_roles(session_id,session_key,session_token):
                         #attached_policy_detach = client.detach_role_policy(RoleName='test-role-delete-1',PolicyArn='arn:aws:iam::186630241196:role/test-role-delete-1')
 
                else:
-                     print(f'{myarn} days since used = {daysSinceUsed} less then {MaxdaysSinceUsed} --skip')
+                     print(f'{myarn} days since used = {days_since_used} less then {maxdays_since_used} --skip')
                continue
 perform_list_roles(session_id,session_key,session_token)
