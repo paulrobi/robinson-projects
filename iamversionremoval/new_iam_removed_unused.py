@@ -34,7 +34,7 @@ dest_role_name="nct_cse_prod_tools_role"
 # create output csv
 outputfile = open('iam_rm_role_policies_output.csv', 'w',newline='')
 csv_write = csv.writer(outputfile,delimiter=',')
-output_header = "AccountId,AccountName,PolicyName,IsDefaultVersion,PolicyAge,PolicyCreateDate,ProfileVersion,Action,DryRun,AssumedRoleError\n"
+output_header = "AccountId,AccountName,AccountEnv,DryRun(Y|N),AssumeRoleStatus,Name,Typei(Role|Policy),Action,Age,LastUsed\n"
 outputfile.write(output_header)
 
 # assume role for account function
@@ -54,7 +54,7 @@ session_id,session_key,session_token = perform_assume_role([('dest_acctnumber',d
 print(f'\n Session ID Main {session_id}')
 print(f'\n Session Key Main {session_key}')
 print(f'\n Session Token Main {session_token}')
-print('\n\n##########################################')
+print('\n\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
 #list roles in selected account mark those over X days since accessed
 def perform_list_roles(session_id,session_key,session_token):
@@ -68,34 +68,35 @@ def perform_list_roles(session_id,session_key,session_token):
     for r in [r for r in rolesResponse['Roles'] if '/aws-service-role/' not in r['Path'] and '/service-role/' not in r['Path']]:
         jobId = client.generate_service_last_accessed_details(Arn=r['Arn'])['JobId']
         rolename=r['RoleName']
-        print(f'rolename = {rolename}')
+        print("###################################")
+        print(f'RoleName={rolename}')
         roleAccessDetails = client.get_service_last_accessed_details(JobId=jobId)
         jobAttempt = 0
-        print()
         while roleAccessDetails['JobStatus'] == 'IN_PROGRESS':
             time.sleep(jobAttempt*2)
             jobAttempt = jobAttempt + 1
             roleAccessDetails = client.get_service_last_accessed_details(JobId=jobId)
         if roleAccessDetails['JobStatus'] == 'FAILED':
+            action_taken ="skip: unable to report"
             print(f'Unable to retrive last access report for role {0}. No action taken.\n')
         else:
-            lastAccessedDates = [a['LastAuthenticated'] for a in roleAccessDetails['ServicesLastAccessed'] if 'LastAuthenticated' in a]
+            last_accessed_date = [a['LastAuthenticated'] for a in roleAccessDetails['ServicesLastAccessed'] if 'LastAuthenticated' in a]
             myarn=r['Arn']
-            print(f'{myarn} LastAccess={lastAccessedDates}')
             # not accessed in 400days
-            if not lastAccessedDates:
-                #report += 'Role {0} has no access history. No action taken.\n'.format( r['Arn'])
-                print(f'{myarn} has no access history in 400days --delete.')
+            if not last_accessed_date:
+                last_accessed_date = "NoAccess in over 400days"
+                action_taken ="Delete-Role: "
+                print(f'Action={action_taken} {rolename}')
+                print(f'{myarn} LastAccess={last_accessed_date}')
                 attached_policies_response = client.list_attached_role_policies(RoleName=rolename)['AttachedPolicies']
                 for attached_policies in attached_policies_response:
                     attached_policy_name=attached_policies['PolicyName']
                     attached_policy_arn=attached_policies['PolicyArn']
-                    print(f'RoleName={rolename}')
-                    print(f'PolicyName={attached_policy_name}')
-                    print(f'PolicyArn={attached_policy_arn}')
+                    print(f'AttachedPolicyName={attached_policy_name}')
+                    print(f'AttachedPolicyArn={attached_policy_arn}')
             else:
-               roleLastUsed = min(lastAccessedDates)
-               days_since_used = (date_now - roleLastUsed.replace(tzinfo=None)).days
+               rolelastused = min(last_accessed_date)
+               days_since_used = (date_now - rolelastused.replace(tzinfo=None)).days
                ### add Logic for math to delete if not accessed in X days
                if days_since_used >= maxdays_since_used:
                     print(f'{myarn} days since used = {days_since_used} greater then {maxdays_since_used} --delete')
@@ -109,6 +110,7 @@ def perform_list_roles(session_id,session_key,session_token):
                         #attached_policy_detach = client.detach_role_policy(RoleName='test-role-delete-1',PolicyArn='arn:aws:iam::186630241196:role/test-role-delete-1')
 
                else:
+                     action_taken ="Skip-Role-Deletion:"
                      print(f'{myarn} days since used = {days_since_used} less then {maxdays_since_used} --skip')
                continue
 perform_list_roles(session_id,session_key,session_token)
