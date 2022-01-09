@@ -68,7 +68,6 @@ def perform_list_roles(session_id,session_key,session_token):
          aws_session_token=session_token
       )
     rolesResponse = iam_assumed_client.list_roles(MaxItems=1000)
-    ###for r in [r for r in rolesResponse['Roles'] if '/aws-service-role/' not in r['Path'] and '/service-role/' not in r['Path']]:
     for r in [r for r in rolesResponse['Roles'] if 'test-role-delete' in r['RoleName'] and '/aws-service-role/' not in r['Path'] and '/service-role/' not in r['Path']]:
         jobId = client.generate_service_last_accessed_details(Arn=r['Arn'])['JobId']
         rolename=r['RoleName']
@@ -86,7 +85,6 @@ def perform_list_roles(session_id,session_key,session_token):
         else:
             last_accessed_date = [a['LastAuthenticated'] for a in roleAccessDetails['ServicesLastAccessed'] if 'LastAuthenticated' in a]
             myarn=r['Arn']
-
             # not accessed in 400days
             if not last_accessed_date:
                 last_accessed_date = "NoAccess in over 400days"
@@ -99,6 +97,15 @@ def perform_list_roles(session_id,session_key,session_token):
                     attached_policy_arn=attached_policies['PolicyArn']
                     print(f'AttachedPolicyName={attached_policy_name}')
                     print(f'AttachedPolicyArn={attached_policy_arn}')
+                    ###attached_policy_detach = client.detach_role_policy(RoleName=rolename,PolicyArn=attached_policy_arn)
+                    attached_policy_detach = client.detach_role_policy(RoleName=rolename,PolicyArn=attached_policy_arn)
+                attached_inline_policies_reponse = client.list_role_policies(RoleName=rolename)['PolicyNames']
+                print(attached_inline_policies_reponse)
+                for attached_inline_policies_name in attached_inline_policies_reponse:
+                    if attached_inline_policies_name:
+                       print(f'HERE {attached_inline_policies_name}')
+                       #client.delete_role_policy(RoleName=rolename,PolicyName=attached_inline_policies_name)
+                       client.delete_role_policy(RoleName=rolename,PolicyName=attached_inline_policies_name)
             else:
                rolelastused = min(last_accessed_date)
                days_since_used = (date_now - rolelastused.replace(tzinfo=None)).days
@@ -113,6 +120,7 @@ def perform_list_roles(session_id,session_key,session_token):
                         print(f'PolicyName={attached_policy_name}')
                         print(f'PolicyArn={attached_policy_arn}')
                         #attached_policy_detach = client.detach_role_policy(RoleName='test-role-delete-1',PolicyArn='arn:aws:iam::186630241196:role/test-role-delete-1')
+                        #attached_policy_detach = client.detach_role_policy(RoleName=rolename,PolicyArn=attached_policy_arn)
 
                else:
                      action_taken ="Skip-Role-Deletion:"
