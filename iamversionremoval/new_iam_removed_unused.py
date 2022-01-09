@@ -69,7 +69,7 @@ def perform_list_roles(session_id,session_key,session_token):
       )
     rolesResponse = iam_assumed_client.list_roles(MaxItems=1000)
     ###for r in [r for r in rolesResponse['Roles'] if '/aws-service-role/' not in r['Path'] and '/service-role/' not in r['Path']]:
-    for r in [r for r in rolesResponse['Roles'] if 'test-role' in r['RoleName'] and '/aws-service-role/' not in r['Path'] and '/service-role/' not in r['Path']]:
+    for r in [r for r in rolesResponse['Roles'] if 'test-role-delete' in r['RoleName'] and '/aws-service-role/' not in r['Path'] and '/service-role/' not in r['Path']]:
         jobId = client.generate_service_last_accessed_details(Arn=r['Arn'])['JobId']
         rolename=r['RoleName']
         print("###################################")
