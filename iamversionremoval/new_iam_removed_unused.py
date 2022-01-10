@@ -56,31 +56,32 @@ def perform_assume_role(account_info):
 
 def perform_remove_role_from_instance_profile(rolename):
     print(f'Entered perform_remove_role_from_instance_profile {rolename}')
-    res = client.list_instance_profiles_for_role(RoleName=rolename)
-    for inst in res['InstanceProfiles']:
-        testxxx = inst['InstanceProfileName']
+    inst_profile = client.list_instance_profiles_for_role(RoleName=rolename)
+    for inst_profile in inst_profile['InstanceProfiles']:
+        testxxx = inst_profile['InstanceProfileName']
         print(f'Profile Name = {testxxx}')
         res2 = client.remove_role_from_instance_profile(
             RoleName=rolename,
-            InstanceProfileName=inst['InstanceProfileName']
+            InstanceProfileName=inst_profile['InstanceProfileName']
         )
+
 
 def perform_policy_detach(rolename):
     print(f'Entered perform_policy_detach {rolename}')
     attached_policies_response = client.list_attached_role_policies(RoleName=rolename)['AttachedPolicies']
     print(attached_policies_response)
     for attached_policies in attached_policies_response:
-                        attached_policy_name=attached_policies['PolicyName']
-                        attached_policy_arn=attached_policies['PolicyArn']
-                        print(f'RoleName={rolename}')
-                        print(f'PolicyName={attached_policy_name}')
-                        print(f'PolicyArn={attached_policy_arn}')
-                        attached_policy_detach = client.detach_role_policy(RoleName=rolename,PolicyArn=attached_policy_arn)
+        attached_policy_name = attached_policies['PolicyName']
+        attached_policy_arn = attached_policies['PolicyArn']
+        print(f'RoleName={rolename}')
+        print(f'PolicyName={attached_policy_name}')
+        print(f'PolicyArn={attached_policy_arn}')
+        attached_policy_detach = client.detach_role_policy(RoleName=rolename,PolicyArn=attached_policy_arn)
     attached_inline_policies_response = client.list_role_policies(RoleName=rolename)['PolicyNames']
-    for attached_inline_policies_name in attached_inline_policies_response:
-        print(f'Attached InLine {attached_inline_policies_name}')
-        if attached_inline_policies_name:
-           print(f'HERE {attached_inline_policies_name}')
+    for attached_inline_policy in attached_inline_policies_response:
+        print(f'Attached Inline Policy = {attached_inline_policy}')
+        client.delete_role_policy(RoleName=rolename,PolicyName=attached_inline_policy)
+
 
 
 session_id,session_key,session_token = perform_assume_role([('dest_acctnumber',dest_acctnumber),('dest_role_name',dest_role_name)])
