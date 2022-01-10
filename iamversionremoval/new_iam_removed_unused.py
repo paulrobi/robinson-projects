@@ -49,10 +49,7 @@ def perform_assume_role(account_info):
          ExternalId='terraform_agent_request',
          DurationSeconds=900
      )
-    newsession_id = stsresponse["Credentials"]["AccessKeyId"]
-    newsession_key = stsresponse["Credentials"]["SecretAccessKey"]
-    newsession_token = stsresponse["Credentials"]["SessionToken"]
-    return (newsession_id,newsession_key,newsession_token)
+    return (stsresponse["Credentials"]["AccessKeyId"],stsresponse["Credentials"]["SecretAccessKey"],stsresponse["Credentials"]["SessionToken"])
 
 def perform_remove_role_from_instance_profile(rolename):
     print(f'Entered perform_remove_role_from_instance_profile {rolename}')
@@ -64,7 +61,6 @@ def perform_remove_role_from_instance_profile(rolename):
             RoleName=rolename,
             InstanceProfileName=inst_profile['InstanceProfileName']
         )
-
 
 def perform_policy_detach(rolename):
     print(f'Entered perform_policy_detach {rolename}')
@@ -84,20 +80,9 @@ def perform_policy_detach(rolename):
 
 
 
-session_id,session_key,session_token = perform_assume_role([('dest_acctnumber',dest_acctnumber),('dest_role_name',dest_role_name)])
-#print(f'\n Session ID Main {session_id}')
-#print(f'\n Session Key Main {session_key}')
-#print(f'\n Session Token Main {session_token}')
-print('\n\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
 #list roles in selected account mark those over X days since accessed
-def perform_list_roles(session_id,session_key,session_token):
-    iam_assumed_client = boto3.client(
-        'iam',
-         aws_access_key_id=session_id,
-         aws_secret_access_key=session_key,
-         aws_session_token=session_token
-      )
+def perform_role_maintenance(session_id,session_key,session_token):
     rolesResponse = iam_assumed_client.list_roles(MaxItems=1000)
     for r in [r for r in rolesResponse['Roles'] if 'test-role-delete' in r['RoleName'] and '/aws-service-role/' not in r['Path'] and '/service-role/' not in r['Path']]:
         jobId = client.generate_service_last_accessed_details(Arn=r['Arn'])['JobId']
@@ -138,4 +123,12 @@ def perform_list_roles(session_id,session_key,session_token):
                      action_taken ="Skip-Role-Deletion:"
                      print(f'{myarn} days since used = {days_since_used} less then {maxdays_since_used} --skip')
                continue
-perform_list_roles(session_id,session_key,session_token)
+
+# MAIN
+session_id,session_key,session_token = perform_assume_role([('dest_acctnumber',dest_acctnumber),('dest_role_name',dest_role_name)])
+iam_assumed_client = boto3.client('iam', aws_access_key_id=session_id, aws_secret_access_key=session_key, aws_session_token=session_token)
+#print(f'\n Session ID Main {session_id}')
+#print(f'\n Session Key Main {session_key}')
+#print(f'\n Session Token Main {session_token}')
+print('\n\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+perform_role_maintenance(session_id,session_key,session_token)
