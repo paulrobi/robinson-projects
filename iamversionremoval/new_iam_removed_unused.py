@@ -11,11 +11,12 @@
 # -log policies not attached and deleted
 # Delete Policies
 
-role_list = [('test-role-delete-2','arn:aws:iam::186630241196:instance-profile/test-role-delete-2'),('test-role-delete-1-with-inline','arn:aws:iam::186630241196:role/test-role-delete-1-with-inline')]
+#role_list = [('test-role-delete-2','arn:aws:iam::186630241196:instance-profile/test-role-delete-2'),('test-role-delete-1-with-inline','arn:aws:iam::186630241196:role/test-role-delete-1-with-inline')]
+role_list = [('test-role-delete-1-with-inline','arn:aws:iam::186630241196:role/test-role-delete-1-with-inline')]
 #role_list.append('test-role-delete-1-with-inline','arn:aws:iam::186630241196:role/test-role-delete-1-with-inline')
-for rolename,rolearn in role_list:
-    print(f'RoleName {rolename}')
-    print(f'RoleArn {rolearn}')
+###for rolename,rolearn in role_list:
+###    print(f'RoleName {rolename}')
+###    print(f'RoleArn {rolearn}')
 
 import boto3, botocore
 import subprocess, os, sys, argparse, datetime, time, csv
@@ -53,10 +54,39 @@ def perform_assume_role(account_info):
     newsession_token = stsresponse["Credentials"]["SessionToken"]
     return (newsession_id,newsession_key,newsession_token)
 
+def perform_remove_role_from_instance_profile(rolename):
+    print(f'Entered perform_remove_role_from_instance_profile {rolename}')
+    res = client.list_instance_profiles_for_role(RoleName=rolename)
+    for inst in res['InstanceProfiles']:
+        testxxx = inst['InstanceProfileName']
+        print(f'Profile Name = {testxxx}')
+        res2 = client.remove_role_from_instance_profile(
+            RoleName=rolename,
+            InstanceProfileName=inst['InstanceProfileName']
+        )
+
+def perform_policy_detach(rolename):
+    print(f'Entered perform_policy_detach {rolename}')
+    attached_policies_response = client.list_attached_role_policies(RoleName=rolename)['AttachedPolicies']
+    print(attached_policies_response)
+    for attached_policies in attached_policies_response:
+                        attached_policy_name=attached_policies['PolicyName']
+                        attached_policy_arn=attached_policies['PolicyArn']
+                        print(f'RoleName={rolename}')
+                        print(f'PolicyName={attached_policy_name}')
+                        print(f'PolicyArn={attached_policy_arn}')
+                        attached_policy_detach = client.detach_role_policy(RoleName=rolename,PolicyArn=attached_policy_arn)
+    attached_inline_policies_response = client.list_role_policies(RoleName=rolename)['PolicyNames']
+    for attached_inline_policies_name in attached_inline_policies_response:
+        print(f'Attached InLine {attached_inline_policies_name}')
+        if attached_inline_policies_name:
+           print(f'HERE {attached_inline_policies_name}')
+
+
 session_id,session_key,session_token = perform_assume_role([('dest_acctnumber',dest_acctnumber),('dest_role_name',dest_role_name)])
-print(f'\n Session ID Main {session_id}')
-print(f'\n Session Key Main {session_key}')
-print(f'\n Session Token Main {session_token}')
+#print(f'\n Session ID Main {session_id}')
+#print(f'\n Session Key Main {session_key}')
+#print(f'\n Session Token Main {session_token}')
 print('\n\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 
 #list roles in selected account mark those over X days since accessed
@@ -91,37 +121,18 @@ def perform_list_roles(session_id,session_key,session_token):
                 action_taken ="Delete-Role: "
                 print(f'Action={action_taken} {rolename}')
                 print(f'{myarn} LastAccess={last_accessed_date}')
-                attached_policies_response = client.list_attached_role_policies(RoleName=rolename)['AttachedPolicies']
-                for attached_policies in attached_policies_response:
-                    attached_policy_name=attached_policies['PolicyName']
-                    attached_policy_arn=attached_policies['PolicyArn']
-                    print(f'AttachedPolicyName={attached_policy_name}')
-                    print(f'AttachedPolicyArn={attached_policy_arn}')
-                    ###attached_policy_detach = client.detach_role_policy(RoleName=rolename,PolicyArn=attached_policy_arn)
-                    attached_policy_detach = client.detach_role_policy(RoleName=rolename,PolicyArn=attached_policy_arn)
-                attached_inline_policies_reponse = client.list_role_policies(RoleName=rolename)['PolicyNames']
-                print(attached_inline_policies_reponse)
-                for attached_inline_policies_name in attached_inline_policies_reponse:
-                    if attached_inline_policies_name:
-                       print(f'HERE {attached_inline_policies_name}')
-                       #client.delete_role_policy(RoleName=rolename,PolicyName=attached_inline_policies_name)
-                       client.delete_role_policy(RoleName=rolename,PolicyName=attached_inline_policies_name)
+                perform_policy_detach(rolename)
+                perform_remove_role_from_instance_profile(rolename)
+                client.delete_role(RoleName=rolename)
             else:
                rolelastused = min(last_accessed_date)
                days_since_used = (date_now - rolelastused.replace(tzinfo=None)).days
                ### add Logic for math to delete if not accessed in X days
                if days_since_used >= maxdays_since_used:
                     print(f'{myarn} days since used = {days_since_used} greater then {maxdays_since_used} --delete')
-                    attached_policies_response = client.list_attached_role_policies(RoleName=rolename)['AttachedPolicies']
-                    for attached_policies in attached_policies_response:
-                        attached_policy_name=attached_policies['PolicyName']
-                        attached_policy_arn=attached_policies['PolicyArn']
-                        print(f'RoleName={rolename}')
-                        print(f'PolicyName={attached_policy_name}')
-                        print(f'PolicyArn={attached_policy_arn}')
-                        #attached_policy_detach = client.detach_role_policy(RoleName='test-role-delete-1',PolicyArn='arn:aws:iam::186630241196:role/test-role-delete-1')
-                        #attached_policy_detach = client.detach_role_policy(RoleName=rolename,PolicyArn=attached_policy_arn)
-
+                    perform_policy_detach(rolename)
+                    perform_remove_role_from_instance_profile(rolename)
+                    client.delete_role(RoleName=rolename)
                else:
                      action_taken ="Skip-Role-Deletion:"
                      print(f'{myarn} days since used = {days_since_used} less then {maxdays_since_used} --skip')
