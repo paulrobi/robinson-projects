@@ -11,12 +11,25 @@
 # -log policies not attached and deleted
 # Delete Policies
 
-#role_list = [('test-role-delete-2','arn:aws:iam::186630241196:instance-profile/test-role-delete-2'),('test-role-delete-1-with-inline','arn:aws:iam::186630241196:role/test-role-delete-1-with-inline')]
-role_list = [('test-role-delete-1-with-inline','arn:aws:iam::186630241196:role/test-role-delete-1-with-inline')]
-#role_list.append('test-role-delete-1-with-inline','arn:aws:iam::186630241196:role/test-role-delete-1-with-inline')
-###for rolename,rolearn in role_list:
-###    print(f'RoleName {rolename}')
-###    print(f'RoleArn {rolearn}')
+# Nested dictionary having same keys
+#Dict = { 'Dict1': {'name': 'Ali', 'age': '19'},
+#         'Dict2': {'name': 'Bob', 'age': '25'}}
+# Prints value corresponding to key 'name' in Dict1
+#print(Dict['Dict1']['name'])
+# InstanceProfile info pull
+#https://www.programcreek.com/python/?CodeExample=list+profiles
+#paginator = client.get_paginator('list_instance_profiles_for_role')
+#    for response in paginator.paginate(RoleName=args.get('roleName')):
+#        for instanceProfile in response['InstanceProfiles']:
+#            data.append({
+#                'Path': instanceProfile['Path'],
+#                'InstanceProfileName': instanceProfile['InstanceProfileName'],
+#                'InstanceProfileId': instanceProfile['InstanceProfileId'],
+#                'CreateDate': datetime.strftime(instanceProfile['CreateDate'], '%Y-%m-%dT%H:%M:%S'),
+#                'Arn': instanceProfile['Arn'],
+#            })
+#            output.append(instanceProfile)
+
 
 import boto3, botocore
 import subprocess, os, sys, argparse, datetime, time, csv
@@ -52,20 +65,31 @@ def perform_assume_role(account_info):
     return (stsresponse["Credentials"]["AccessKeyId"],stsresponse["Credentials"]["SecretAccessKey"],stsresponse["Credentials"]["SessionToken"])
 
 def perform_remove_role_from_instance_profile(rolename):
-    print(f'Entered perform_remove_role_from_instance_profile {rolename}')
+    print(f'Entered>>> perform_remove_role_from_instance_profile {rolename}')
     inst_profile = client.list_instance_profiles_for_role(RoleName=rolename)
     for inst_profile in inst_profile['InstanceProfiles']:
         testxxx = inst_profile['InstanceProfileName']
         print(f'Profile Name = {testxxx}')
-        res2 = client.remove_role_from_instance_profile(
-            RoleName=rolename,
-            InstanceProfileName=inst_profile['InstanceProfileName']
-        )
+        res2 = client.remove_role_from_instance_profile( RoleName=rolename, InstanceProfileName=inst_profile['InstanceProfileName'])
+
+def perform_remove_instance_profile(rolename):
+    print("****************************")
+    paginator = client.get_paginator('list_instance_profiles_for_role')
+    for response in paginator.paginate(RoleName=rolename):
+        for instanceProfile in response['InstanceProfiles']:
+            profilenamex = instanceProfile['InstanceProfileName'],
+            print(profilenamex)
+            client.remove_role_from_instance_profile(
+                    RoleName=rolename,
+                    InstanceProfileName=instanceProfile['InstanceProfileName']
+            )
+    print("****************************")
+
 
 def perform_policy_detach(rolename):
-    print(f'Entered perform_policy_detach {rolename}')
+    print(f'Entered>>> perform_policy_detach {rolename}')
     attached_policies_response = client.list_attached_role_policies(RoleName=rolename)['AttachedPolicies']
-    print(attached_policies_response)
+    #print(attached_policies_response)
     for attached_policies in attached_policies_response:
         attached_policy_name = attached_policies['PolicyName']
         attached_policy_arn = attached_policies['PolicyArn']
@@ -109,6 +133,7 @@ def perform_role_maintenance(session_id,session_key,session_token):
                 print(f'{myarn} LastAccess={last_accessed_date}')
                 perform_policy_detach(rolename)
                 perform_remove_role_from_instance_profile(rolename)
+                perform_remove_instance_profile(rolename)
                 client.delete_role(RoleName=rolename)
             else:
                rolelastused = min(last_accessed_date)
@@ -118,6 +143,7 @@ def perform_role_maintenance(session_id,session_key,session_token):
                     print(f'{myarn} days since used = {days_since_used} greater then {maxdays_since_used} --delete')
                     perform_policy_detach(rolename)
                     perform_remove_role_from_instance_profile(rolename)
+                    perform_remove_instance_profile(rolename)
                     client.delete_role(RoleName=rolename)
                else:
                      action_taken ="Skip-Role-Deletion:"
@@ -127,8 +153,5 @@ def perform_role_maintenance(session_id,session_key,session_token):
 # MAIN
 session_id,session_key,session_token = perform_assume_role([('dest_acctnumber',dest_acctnumber),('dest_role_name',dest_role_name)])
 iam_assumed_client = boto3.client('iam', aws_access_key_id=session_id, aws_secret_access_key=session_key, aws_session_token=session_token)
-#print(f'\n Session ID Main {session_id}')
-#print(f'\n Session Key Main {session_key}')
-#print(f'\n Session Token Main {session_token}')
 print('\n\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
 perform_role_maintenance(session_id,session_key,session_token)
