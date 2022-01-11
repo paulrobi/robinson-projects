@@ -68,8 +68,7 @@ def perform_remove_role_from_instance_profile(rolename):
     print(f'Entered>>> perform_remove_role_from_instance_profile {rolename}')
     inst_profile = client.list_instance_profiles_for_role(RoleName=rolename)
     for inst_profile in inst_profile['InstanceProfiles']:
-        testxxx = inst_profile['InstanceProfileName']
-        print(f'Profile Name = {testxxx}')
+        print(f'Status Role {rolename} Removed from InstanceProfile {inst_profile}')
         res2 = client.remove_role_from_instance_profile( RoleName=rolename, InstanceProfileName=inst_profile['InstanceProfileName'])
 
 def perform_remove_instance_profile(rolename):
@@ -77,8 +76,7 @@ def perform_remove_instance_profile(rolename):
     paginator = client.get_paginator('list_instance_profiles_for_role')
     for response in paginator.paginate(RoleName=rolename):
         for instanceProfile in response['InstanceProfiles']:
-            profilenamex = instanceProfile['InstanceProfileName'],
-            print(profilenamex)
+            print(f'Status InstanceProfileToRemoved {instanceProfile}')
             client.remove_role_from_instance_profile(
                     RoleName=rolename,
                     InstanceProfileName=instanceProfile['InstanceProfileName']
@@ -89,20 +87,17 @@ def perform_remove_instance_profile(rolename):
 def perform_policy_detach(rolename):
     print(f'Entered>>> perform_policy_detach {rolename}')
     attached_policies_response = client.list_attached_role_policies(RoleName=rolename)['AttachedPolicies']
-    #print(attached_policies_response)
-    for attached_policies in attached_policies_response:
-        attached_policy_name = attached_policies['PolicyName']
-        attached_policy_arn = attached_policies['PolicyArn']
-        print(f'RoleName={rolename}')
-        print(f'PolicyName={attached_policy_name}')
-        print(f'PolicyArn={attached_policy_arn}')
+    for attached_policy in attached_policies_response:
+        attached_policy_name = attached_policy['PolicyName']
+        attached_policy_arn = attached_policy['PolicyArn']
+        print(f'RoleName={rolename} PolicyName={attached_policy_name} PolicyArn={attached_policy_arn}')
+        print(f'Status AttachedPolicyDetached = {attached_policy}')
         attached_policy_detach = client.detach_role_policy(RoleName=rolename,PolicyArn=attached_policy_arn)
     attached_inline_policies_response = client.list_role_policies(RoleName=rolename)['PolicyNames']
     for attached_inline_policy in attached_inline_policies_response:
-        print(f'Attached Inline Policy = {attached_inline_policy}')
+        print(f'RoleName={rolename} InlinePolicyName={attached_inline_policy}')
+        print(f'Status AttachedInlinePolicyDetached = {attached_inline_policy}')
         client.delete_role_policy(RoleName=rolename,PolicyName=attached_inline_policy)
-
-
 
 
 #list roles in selected account mark those over X days since accessed
