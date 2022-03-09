@@ -1,0 +1,85 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": [
+                    "arn:aws:iam::103409066460:role/cibs-ec2-role",
+                    "arn:aws:iam::164783508613:role/cibs-ec2-role"
+                ]
+            },
+            "Action": [
+                "s3:PutObjectAcl",
+                "s3:PutObject",
+                "s3:GetObjectAcl",
+                "s3:GetObject",
+                "s3:DeleteObject"
+            ],
+            "Resource": "arn:aws:s3:::vircibsinformixs3-prod/*"
+        },
+        {
+            "Sid": "s3listprod",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": [
+                    "arn:aws:iam::103409066460:role/cibs-ec2-role",
+                    "arn:aws:iam::164783508613:role/cibs-ec2-role"
+                ]
+            },
+            "Action": "s3:ListBucket",
+            "Resource": "arn:aws:s3:::vircibsinformixs3-prod"
+        }
+    ]
+}
+#############################################################
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "s3role",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": [
+                    "arn:aws:iam::103409066460:role/cibs-ec2-role",
+                    "arn:aws:iam::164783508613:role/cibs-ec2-role"
+                ]
+            },
+            "Action": [
+                "s3:PutObjectAcl",
+                "s3:PutObject",
+                "s3:GetObjectAcl",
+                "s3:GetObject",
+                "s3:DeleteObject"
+            ],
+            "Resource": "arn:aws:s3:::vircibsinformixs3-stag/*"
+        },
+        {
+            "Sid": "s3listprod",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": [
+                    "arn:aws:iam::103409066460:role/cibs-ec2-role",
+                    "arn:aws:iam::164783508613:role/cibs-ec2-role"
+                ]
+            },
+            "Action": "s3:ListBucket",
+            "Resource": "arn:aws:s3:::vircibsinformixs3-stag"
+        }
+    ]
+}
+
+################################# ORIGIONAL #########################################
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Statement1",
+            "Principal": {},
+            "Effect": "Allow",
+            "Action": [],
+            "Resource": []
+        }
+    ]
+}

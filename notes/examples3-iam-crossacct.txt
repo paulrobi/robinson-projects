@@ -1,0 +1,89 @@
+Existing DAQ Prod djin-provider-daqsftp
+"arn:aws:s3:::djin-nonprod-contentpipeline-vir/daq_accounts/*"
+"arn:aws:s3:::oredjin-daqsftp-stag/*",
+ENT STAG BILLING: arn:aws:s3:::vircibsinformixs3-stag
+ENT PROD BILLING: arn:aws:s3:::vircibsinformixs3-prod
+
+
+
+
+INGEST PROD djin-provider-daqsftp example
+{
+    "Statement": [
+        {
+            "Action": [
+                "s3:AbortMultipartUpload",
+                "s3:DeleteObject",
+                "s3:DeleteObjectVersion",
+                "s3:GetBucketCORS",
+                "s3:GetBucketLocation",
+                "s3:GetBucketLogging",
+                "s3:GetBucketNotification",
+                "s3:GetBucketPolicy",
+                "s3:GetBucketLogging",
+                "s3:GetBucketTagging",
+                "s3:GetBucketVersioning",
+                "s3:GetBucketWebsite",
+                "s3:GetLifecycleConfiguration",
+                "s3:GetObject",
+                "s3:GetObjectVersion",
+                "s3:GetObjectVersionAcl",
+                "s3:GetObjectVersionTagging",
+                "s3:ListBucket",
+                "s3:ListBucketByTags",
+                "s3:ListBucketMultipartUploads",
+                "s3:ListBucketVersions",
+                "s3:ObjectOwnerOverrideToBucketOwner",
+                "s3:PutBucketLogging",
+                "s3:PutBucketTagging",
+                "s3:PutBucketVersioning",
+                "s3:PutLifecycleConfiguration",
+                "s3:PutObject",
+                "s3:PutObjectAcl",
+                "s3:RestoreObject",
+                "s3:ReplicateDelete",
+                "s3:ReplicateTags",
+                "s3:ReplicateObject"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::virdjin-daqsftp-nonprod/*",
+                "arn:aws:s3:::virdjin-daqsftp-nonprod",
+                "arn:aws:s3:::oredjin-daqsftp-nonprod/*",
+                "arn:aws:s3:::oredjin-daqsftp-nonprod",
+                "arn:aws:s3:::virdjin-daqsftp-stag/*",
+                "arn:aws:s3:::virdjin-daqsftp-stag",
+                "arn:aws:s3:::oredjin-daqsftp-stag/*",
+                "arn:aws:s3:::oredjin-daqsftp-stag",
+                "arn:aws:s3:::virdjin-daqsftp-prod/*",
+                "arn:aws:s3:::virdjin-daqsftp-prod",
+                "arn:aws:s3:::oredjin-daqsftp-prod/*",
+                "arn:aws:s3:::oredjin-daqsftp-prod"
+            ]
+        },
+        {
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:DeleteObject"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::djin-nonprod-contentpipeline-vir/daq_accounts/*",
+                "arn:aws:s3:::virdjin-daqsftp-stag/*",
+                "arn:aws:s3:::virdjin-daqsftp-nonprod/*",
+                "arn:aws:s3:::djin-prod-contentpipeline-vir/daq_accounts/*"
+            ]
+        },
+        {
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::djin-nonprod-contentpipeline-vir",
+                "arn:aws:s3:::virdjin-daqsftp-stag",
+                "arn:aws:s3:::virdjin-daqsftp-nonprod",
+                "arn:aws:s3:::djin-prod-contentpipeline-vir"
+            ]
+        },
