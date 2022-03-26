@@ -1,0 +1,237 @@
+#!/bin/bash -vx
+
+###############################
+# start of GENERAL OS SECTION #
+###############################
+
+# capture output
+exec &> >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+
+# set timezone
+cp -p /etc/sysconfig/clock /etc/sysconfig/clock.bak
+sed -i "s/ZONE=.*/ZONE=\"America\/New_York\"/g" /etc/sysconfig/clock
+mv /etc/localtime /etc/localtime.bak
+ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
+
+# update+install packages
+yum update -y
+yum install -y ecs-init bind-utils nfs-utils nfs-common
+yum install -y telnet bind-utils autofs
+
+# install awscli
+###curl -O https://bootstrap.pypa.io/get-pip.py
+### install older version of pip for Python 2.7
+curl -O https://bootstrap.pypa.io/pip/2.7/get-pip.py
+python get-pip.py --user
+export PATH=~/.local/bin:$PATH
+pip install awscli
+export PATH=$PATH:/usr/local/bin
+
+# install the Docker volume plugin
+docker plugin install rexray/ebs REXRAY_PREEMPT=true EBS_REGION=us-east-1 --grant-all-permissions
+
+# stop ecs first until EBS volume is successfully mounted
+service docker stop
+stop ecs
+
+# define cluster name
+echo djis-cibs-engine-stag > /tmp/ecs-cluster-name
+#echo ECS_CLUSTER=djis-cibs-engine-stag >> /etc/ecs/ecs.config
+echo ECS_CLUSTER=djis-cibs-engine-stag >> /etc/ecs/ecs.config
+cat /etc/ecs/ecs.config | grep "ECS_CLUSTER"
+
+# disable password aging
+sed -i '/PASS_MAX_DAYS/c\PASS_MAX_DAYS 99999' /etc/login.defs
+sed -i '/PASS_MIN_DAYS/c\PASS_MIN_DAYS 0' /etc/login.defs
+
+# set up eapaddgroup.sh script
+cat << 'EOF' > /usr/local/bin/eapaddgroup.sh
+#!/bin/bash
+if [ $# -ne 1 ]; then
+   echo "Usage Error $0 \"\$groupid:\$yourgroupname\" ex. 877999:appxsupport "
+   exit 1
+fi
+eapentry=$1
+eapgid=`echo $eapentry|awk -F":" '{print $1}'`
+eapname=`echo $eapentry|awk -F":" '{print $2}'`
+printf "Add GroupID=$eapgid GroupName=eapname Y|N \n"
+printf "> "
+read hold
+case $hold in
+  y|Y) if ! grep  -q sudoergroup /etc/sudoers  ; then
+          sed -i '/## Allows people in group wheel to run all commands[^\n]*/,$!b;//{x;//p;g};//!H;$!d;x;s//&\n%sudoergroup\tALL=(ALL)\t\tNOPASSWD: ALL\n/' /etc/sudoers
+      fi
+      if ! grep  -q sudoergroup /etc/group  ; then
+         echo "sudoergroup:x:680006:" >> /etc/group
+      fi
+      if ! grep $eapentry /etc/pam.d/su ; then
+         sed -i "/device_gid=600001/ s/$/|$eapentry/" /etc/pam.d/su
+      fi
+      if ! grep $eapentry /etc/pam.d/sudo ; then
+         sed -i "/device_gid=600001/ s/$/|$eapentry/" /etc/pam.d/sudo
+      fi
+      if ! grep $eapentry /etc/pam.d/sshd ; then
+         sed -i "/device_gid=600001/ s/$/|$eapentry/" /etc/pam.d/sshd
+      fi
+      if ! grep $eapentry /etc/pam.d/eap-q ; then
+         sed -i "/device_gid=600001/ s/$/|$eapentry/" /etc/pam.d/eap-q
+      fi
+      ;;
+  n|N) printf "No changes made. exiting \n"
+       exit 0
+     ;;
+  *) printf "responce not y|n. No changes made. exiting \n"
+       exit 1
+     ;;
+esac
+EOF
+chmod 755 /usr/local/bin/eapaddgroup.sh
+
+# mount EBS volume for specific AZ
+REG=`curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/'`
+Iid=`curl http://169.254.169.254/latest/meta-data/instance-id`
+Iaz=`aws ec2 describe-instances --instance-ids $Iid --region $REG |grep AvailabilityZone|cut -d'"' -f4`
+EBSVOL=`aws ec2 describe-volumes --region $REG --filters Name=tag:vollockname,Values=fcibsint-volume Name=availability-zone,Values=$Iaz|jq -r '.Volumes[].VolumeId'`
+if
+  [ "$EBSVOL" ]
+then
+  set -- $EBSVOL
+  if
+    [ $# -eq 1 ]
+  then
+    while
+      true
+    do
+      aws ec2 wait volume-available --region $REG --volume-ids $EBSVOL
+      if
+        [ $? = 0 ]
+      then
+        break
+      fi
+    done
+    aws ec2 attach-volume --region $REG --volume-id $EBSVOL --instance-id $Iid --device /dev/sdh
+    aws ec2 wait volume-in-use --region $REG --volume-ids $EBSVOL
+    sleep 20
+    mkdir /ebs
+    mount /dev/cibsvg/cibsvol /ebs
+  fi
+else
+  # set up /ebs
+  fdisk -l /dev/sdb
+  if
+    [ $? = 0 ]
+  then
+    pvcreate /dev/sdb
+    vgcreate ebsvg /dev/sdb
+    vgchange -ay ebsvg
+    lvcreate -l +100%FREE -n ebs ebsvg
+    mkfs.ext4 /dev/ebsvg/ebs
+    mkdir /ebs
+    mount /dev/ebsvg/ebs /ebs
+    echo "/dev/ebsvg/ebs  /ebs  ext4     defaults        0 0" >> /etc/fstab
+  fi
+fi
+
+# start ecs after EBS volume is successfully mounted
+service docker start
+start ecs
+
+#################################
+# start of GENERAL USER SECTION #
+#################################
+
+# set up cibs directories under /ebs
+mkdir -p /ebs/home/cibs /ebs/fcibsint/data /ebs/fcibsint1/data /ebs/fcibsint2/data /ebs/fcibsint3/data
+chmod -R go+rx /ebs
+ln -s /ebs/cibs /
+ln -s /ebs/home/cibs /home/cibs
+
+# create cibs user
+groupadd -g 1000 cibs
+useradd -u 1000 -g cibs -m -d /home/cibs cibs
+chage -I -1 -m 0 -M 99999 -E -1 cibs
+chown -R cibs:cibs /home/cibs /ebs
+
+# provide sudo to cibs_team
+echo Y | /usr/local/sbin/eapaddgroup.sh 600039:cibs_team
+
+# mount efs filesystem and make it persistent
+echo fs-3cfe84bf.efs.us-east-1.amazonaws.com > /tmp/efs-app-dns-name
+mkdir /efs
+mount -t efs fs-3cfe84bf.efs.us-east-1.amazonaws.com:/ /efs
+if
+  [ $? = 0 ]
+then
+  echo "fs-3cfe84bf.efs.us-east-1.amazonaws.com:/	/efs	efs	defaults,_netdev	0 0" >> /etc/fstab
+  for i
+  in fcibsint fcibsint1 fcibsint2 fcibsint3
+  do
+    mkdir -p /efs/$i/data /efs/$i/ext_data
+    chown -R cibs:cibs /efs/$i/data
+    chown cibs:cibs /efs/$i
+  done
+fi
+
+# set up autofs
+cp -p /etc/auto.master /etc/auto.master.ORG
+cat << 'EOF' > /etc/auto.master
+/mnt/auto    /etc/auto.mnt --timeout=60
+EOF
+cp -p /etc/auto.mnt /etc/auto.mnt.ORG
+aws s3 cp s3://vircibsinformixs3-stag/application_setup/auto.mnt /etc/auto.mnt
+
+chkconfig autofs on
+service autofs restart
+
+for i
+in setup-docker-instance.sh setup-db.sh fcibsint fcibsint1 fcibsint2 fcibsint3 fcibsint-stats fcibsint-stats-monitor
+do
+  aws s3 cp s3://vircibsinformixs3-stag/application_setup/$i /usr/local/bin/$i
+  chmod +x /usr/local/bin/$i
+  ln -s /usr/local/bin/$i /usr/local/sbin/$i
+done
+
+# get setup-dockers.sh from s3 then set up in cron
+mkdir -p /usr/local/bin
+for i
+in setup-dockers.sh
+do
+  aws s3 cp s3://vircibsinformixs3-stag/application_setup/$i /usr/local/bin/$i
+  chmod +x /usr/local/bin/$i
+  # run it right away then add to cron
+  /usr/local/bin/$i
+  (crontab -l 2>/dev/null; echo "* * * * * /usr/local/bin/$i > /var/tmp/$i.cron.out 2>&1") | crontab -
+done
+
+# set up new relic
+cat <<EOF >/etc/yum.repos.d/newrelic-infra.repo
+[newrelic-infra]
+name=New Relic Infrastructure
+baseurl=https://download.newrelic.com/infrastructure_agent/linux/yum/el/6/x86_64
+gpgkey=https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg
+gpgcheck=1
+repo_gpgcheck=1
+EOF
+
+cat <<EOF >/etc/newrelic-infra.yml
+verbose: 0
+license_key: e27e1b79836d673b030eceffe50b0b7827a67baf
+custom_attributes:
+  _ciName: fcibsint
+  _appid: ea_cibs_billing
+  _company: Dow Jones
+  _environment: Staging
+  _productCategorization: Server
+  _site: AWS Virginia
+  _owningOrg: Enterprise Apps
+  _service: Billing
+  _owner: Factiva SA Linux
+EOF
+yum -q makecache -y --disablerepo='*' --enablerepo='newrelic-infra'
+yum install newrelic-infra -y
+
+initctl stop newrelic-infra
+initctl start newrelic-infra
+
+echo "user_data run is finished!"
+exit 0
