@@ -1,0 +1,252 @@
+
+3/28 acct creation
+https://www.thegeekstuff.com/2022/03/aws-secrets-manager-cli-examples/
+get username directory and password and ?access_rights
+create vir OS account  getting UID & Gid
+/sbin/useradd --home $userdir_entered --comment "print-sftp-user" --gid 10000 --shell /sbin/nologin
+./printuser_creation.sh -add -accesstype=readwrite -username=test123 -password=609Ridge -userdir=/sftp/print/test123
+
+data = data.replace('CHANGE_PASSWD', str(userpasswd))
+data = data.replace('CHANGE_ACCT', str(account))
+data = data.replace('CHANGE_ROLE', str(role_level))
+data = data.replace('CHANGE_EFS', str(efs))
+data = data.replace('CHANGE_USERDIR',str(template_userdir))
+data = data.replace('CHANGE_UID', str(user_uid))
+
+
+
+create userjason
+create vir transfer using uid & Gid
+os.system("/usr/local/bin/aws secretsmanager create-secret --name  "+secretname+" --secret-string "+inputjson+" ")
+os.remove(""+userjasonfile+"")
+
+remote create ore OS account  getting UID & Gid
+remote create ore trasnfer using uid & Gid
+
+
+
+
+2/12 nonprod transfer s-d7c09827fb0c47e2a
+Secretes manager boto3
+https://hands-on.cloud/working-with-secrets-manager-in-python-using-boto3/#AWS-Secrets-Manager-vs.-AWS-Parameter-Store
+https://docs.aws.amazon.com/code-samples/latest/catalog/python-secretsmanager-secretsmanager_basics.py.html
+
+aws secretsmanager list-secrets |jq "."|grep Name|awk -F'"' '{print $4}' > /tmp/xxx
+for secret in `cat /tmp/xxx`; do aws secretsmanager delete-secret  --force-delete-without-recovery --secret-id $secret; done
+
+Emergency SecretsManager Delete aws secretsmanager delete-secret  --force-delete-without-recovery --secret-id s-d7c09827fb0c47e2a/testuser70
+
+#CLEANUP
+cat /etc/passwd |grep ^epn|awk -F":" '{print $1}' > /tmp/xxx
+for user in `cat /tmp/xxx`; do userdel -r $user; /bin/rm -rf /sftp/print/$user; done
+
+aws secretsmanager list-secrets |grep "Name"|awk -F"\"" '{print $4}' > /tmp/xxx  ## THEN EDIT TO REMOVE STATIC ACCOUNTS
+for secret in `cat /tmp/xxx`; do aws secretsmanager delete-secret  --force-delete-without-recovery --secret-id $secret; done
+
+
+
+useradd --uid $userid --gid 10000 --home-dir $homedir --comment "print-sftp-user" --shell /sbin/nologin
+
+###################################
+sam deploy --stack-name sam-virprintsftp-nonprod --config-env nonprod
+
+1. Activate iam.tf-samdeploy-full to allow aws sam to build the stack
+2. Manually modify EFS SG for new created above
+3. Launch Blue
+4. Login to control ec2 instance
+5. Launch sam stack
+     a. cd /home/control/build
+     b. sam deploy --guided
+         (THIS)
+           Stack Name [sam-app]: sam-virprintsftp-nonprod
+           Parameter TransferSubnetIDs []:subnet-2099877a,subnet-9b56d2ff,subnet-18b71053 (inet subnets)
+           Parameter TransferVPCID []: vpc-25bd6b5d
+           Confirm changes before deploy [y/N]: N
+           Allow SAM CLI IAM role creation [Y/n]:
+           Disable rollback [y/N]:N
+           Save arguments to configuration file [Y/n]: Y
+           SAM configuration file [samconfig.toml]: nonprod-samconfig.toml
+           SAM configuration environment [default]: nonprod
+        (OR THIS)
+            aws s3 cp s3://virdjifprintsftpcf-dev/build/nonprod-samconfig.toml /home/control/build
+           sam deploy --stack-name sam-virprintsftp-nonprod --config-env nonprod
+6. Activate iam.tf-minimal-sam-off when complete
+7. from control ec2 create user and get uid. gid will be 10000
+useradd --uid 10000 --gid 10000 --create-home --home-dir /sftp/print/atestuser1 --shell /sbin/nologin --comment "atestuser1 test acct"  atestuser1
+    7a, directory auto created above with permissions of 700
+     --note: create printmaster group 10000, create sftp group 10001, all account permissiions 770 $user:printmaster. only main printuser in group printmaster
+
+7b (IMPORTANT). EFS Permissions /efs 755, /efs/sftp 755, /efs/sftp/print 755, /efs/sftp/print/$user 770 --> need 770 for printuser.
+  (NOTE) may need to modify for master print account
+
+8. in aws secreate manager create user
+       Use roles accoring to client function/permissions
+          ReadOnly: arn:aws:iam::453286311137:role/djprint-sftpclient-readonly-role (works)
+          ReadWrite: arn:aws:iam::453286311137:role/djprint-sftpclient-readwrite-role (works)
+          Admin: arn:aws:iam::453286311137:role/djprint-sftpclient-full-role (works)
+{
+  "Password": "609Ridge#",
+  "Role": "arn:aws:iam::453286311137:role/djprint-sftpclient-readwrite-role",
+  "HomeDirectoryType": "LOGICAL",
+  "HomeDirectoryDetails": "[{\"Entry\": \"/\", \"Target\": \"/fs-08ef52d098c60b174/sftp/print/atestuser1\"}]",
+  "PosixProfile": "{ \"Uid\": 10000, \"Gid\": 10000,\"SecondaryGids\": []}"
+}
+master printuser account
+useradd  --gid 10000 --create-home --home-dir /sftp/print/printuser --shell /sbin/nologin --comment "print master test acct"  printuser
+
+
+
+
+9 (CRITICAL). Name user (SecretName) as xfer-server/username = s-d7c09827fb0c47e2a/testuser2
+
+mkdir /home/control/my_app/
++ mkdir /home/control/my_app/
+mkdir: cannot create directory ‘/home/control/my_app/’: No such file or directory
+
+
+
+homedirectory permissions 700 are ok
+
+
+useradd  --gid 1003 --home-dir  /sftp/print/testuser2 --shell /sbin/nologin --comment " test sftp2"  testuser2
+testuser2:x:1004:1003: test sftp2:/sftp/print/testuser2:/sbin/nologin
+
+
+useradd  --gid 1003 --home-dir  /sftp/print/testuser3 --shell /sbin/nologin --comment " test sftp3"  testuser3
+useradd  --gid 1003 --create-home --home-dir  /sftp/print/testuser4 --shell /sbin/nologin --comment " test sftp4"  testuser4
+
+https://docs.aws.amazon.com/cli/latest/reference/secretsmanager/create-secret.html
+aws secretsmanager create-secret \
+    --name MyTestSecret \
+    --description "My test secret created with the CLI." \
+    --secret-string "{\"user\":\"diegor\",\"password\":\"i29wwX!%9wFV\"}"
+
+
+
+    aws secretsmanager create-secret \
+        --name s-099189ed7b3b4886a/testuser2 \
+        --description "TestUser2 by AWS CLI." \
+        --secret-string "{\"Role\":\"arn:aws:iam::367912847971:role/printtestftp3efs-role\",\"Password\":\"609Ridge#\",\"HomeDirectoryType\":\"LOGICAL\",\"HomeDirectoryDetails\":\"}"
+
+
+        aws secretsmanager create-secret --name s-099189ed7b3b4886a/testuser2 --secret-string file://mycreds.json
+
+
+{
+  "Password": "609Ridge#",
+  "Role": "arn:aws:iam::367912847971:role/printtestftp3efs-role",
+  "HomeDirectoryType": "LOGICAL",
+  "HomeDirectoryDetails": "[{"Entry": "/", "Target": "/fs-0d63f26789b327583/print/testuser2"}]",
+  "dbname": "myDatabase",
+  "PosixProfile": "{ "Uid": 1003, "Gid": 1003,"SecondaryGids": []}"
+}
+
+
+
+
+
+
+
+
+
+####################### Client Read/Write Access ###########################
+data "aws_iam_policy" "djprint-sftpcontrol-efs-client-readwrite-policy" {
+  arn = "arn:aws:iam::aws:policy/AmazonElasticFileSystemClientReadWriteAccess"
+}
+resource "aws_iam_role_policy_attachment" "djprint-sftpcontrol-efs-client-readwrite-policy-attach" {
+  role       = aws_iam_role.djprint-sftpcontrol-role.name
+  policy_arn = data.aws_iam_policy.djprint-sftpcontrol-efs-readwrite-policy.arn
+}
+
+######################### Read Only Access #############################
+data "aws_iam_policy_document" "djprint-sftpcontrol-efs-readonly-policy-doc" {
+  statement {
+    actions       = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+    effect        = "Allow"
+  }
+}
+
+resource "aws_iam_role" "djprint-sftpcontrol-efs-readonly-role" {
+  name               = "djprint-sftpcontrol-efs-readonly-role"
+  assume_role_policy = data.aws_iam_policy_document.djprint-sftpcontrol-efs-readonly-policy-doc.json
+}
+
+resource "aws_iam_policy" "djprint-sftpcontrol-efs-readonly-policy" {
+  description = "djprint-sftpcontrol-efs-readonly-policy"
+  name        = "djprint-sftpcontrol-efs-readonly-policy"
+  policy      = <<EOF
+{
+      "Version": "2012-10-17",
+      "Statement": [
+          {
+              "Effect": "Allow",
+              "Action": [
+                  "elasticfilesystem:ClientMount",
+                  "elasticfilesystem:DescribeMountTargets"
+              ],
+              "Resource": "*"
+          }
+      ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "djprint-sftpcontrol-efs-readonly-policy-att" {
+  role       = aws_iam_role.djprint-sftpcontrol-efs-readonly-role.name
+  policy_arn = aws_iam_policy.djprint-sftpcontrol-efs-readonly-policy.arn
+}
+resource "aws_iam_instance_profile" "djprint-sftpcontrol-efs-readonly-profile" {
+  name = "djprint-sftpcontrol-efs-readonly-profile"
+  role = aws_iam_role.djprint-sftpcontrol-efs-readonly-role.name
+}
+########################### Full Access ################################
+data "aws_iam_policy_document" "djprint-sftpcontrol-efs-full-policy-doc" {
+  statement {
+    actions       = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+    effect        = "Allow"
+  }
+}
+
+resource "aws_iam_role" "djprint-sftpcontrol-efs-full-role" {
+  name               = "djprint-sftpcontrol-efs-full-role"
+  assume_role_policy = data.aws_iam_policy_document.djprint-sftpcontrol-efs-readonly-policy-doc.json
+}
+
+resource "aws_iam_policy" "djprint-sftpcontrol-efs-full-policy" {
+  description = "djprint-sftpcontrol-efs-full-policy"
+  name        = "djprint-sftpcontrol-efs-full-policy"
+  policy      = <<EOF
+{
+      "Version": "2012-10-17",
+      "Statement": [
+          {
+              "Effect": "Allow",
+              "Action": [
+                  "elasticfilesystem:ClientMount",
+                  "elasticfilesystem:ClientRootAccess",
+                  "elasticfilesystem:ClientWrite",
+                  "elasticfilesystem:DescribeMountTargets"
+              ],
+              "Resource": "*"
+          }
+      ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "djprint-sftpcontrol-efs-full-policy-att" {
+  role       = aws_iam_role.djprint-sftpcontrol-efs-full-role.name
+  policy_arn = aws_iam_policy.djprint-sftpcontrol-efs-full-policy.arn
+}
+resource "aws_iam_instance_profile" "djprint-sftpcontrol-efs-full-profile" {
+  name = "djprint-sftpcontrol-efs-full-profile"
+  role = aws_iam_role.djprint-sftpcontrol-efs-full-role.name
+}
