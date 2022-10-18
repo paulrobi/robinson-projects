@@ -1,0 +1,33 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": [
+                    "arn:aws:iam::103409066460:policy/djis-cibs-app-ecs-instance-policy"
+                ]
+            },
+            "Action": [
+                "s3:PutObjectAcl",
+                "s3:PutObject",
+                "s3:GetObjectAcl",
+                "s3:GetObject",
+                "s3:DeleteObject"
+            ],
+            "Resource": "arn:aws:s3:::djin-int-randc-ubo/cibs/*"
+        },
+        {
+            "Sid": "",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": [
+                    "arn:aws:iam::103409066460:policy/djis-cibs-app-ecs-instance-policy"
+                ]
+            },
+            "Action": "s3:ListBucket",
+            "Resource": "arn:aws:s3:::arn:aws:s3:::djin-int-randc-ubo"
+        }
+    ]
+}
