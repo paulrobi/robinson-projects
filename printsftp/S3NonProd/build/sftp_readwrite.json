@@ -1,0 +1,7 @@
+{
+  "Password": "CHANGE_PASSWD",
+  "Role": "arn:aws:iam::453286311137:role/djprint-sftpclient-readwrite-role",
+  "HomeDirectoryType": "LOGICAL",
+  "HomeDirectoryDetails": "[{\"Entry\": \"/\", \"Target\": \"/fs-08ef52d098c60b174/sftp/print/CHANGE_USER\"}]",
+  "PosixProfile": "{ \"Uid\": CHANGE_UID, \"Gid\": 10000,\"SecondaryGids\": []}"
+}

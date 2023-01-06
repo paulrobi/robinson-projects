@@ -1,0 +1,11 @@
+version = 0.1
+[nonprod]
+[nonprod.deploy]
+[nonprod.deploy.parameters]
+stack_name = "sam-virprintsftp-nonprod"
+s3_bucket = "virdjifprintsftpcf-dev"
+s3_prefix = "sam-virprintsftp-nonprod"
+region = "us-east-1"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "CreateServer=\"true\" SecretsManagerRegion=\"\" TransferEndpointType=\"PUBLIC\" TransferSubnetIDs=\"subnet-2099877a,subnet-9b56d2ff,subnet-18b71053\" TransferVPCID=\"vpc-25bd6b5d\""
+image_repositories = []
