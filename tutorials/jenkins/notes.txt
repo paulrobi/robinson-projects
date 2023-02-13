@@ -1,0 +1,13 @@
+Error starting
+https://d1.awsstatic.com/Projects/P5505030/aws-project_Jenkins-build-server.pdf
+
+here
+https://medium.com/techbull/ci-cd-using-jenkins-docker-on-aws-ec2-ubuntu-server-9389786bbc7c
+
+https://serverfault.com/questions/1051031/jenkins-installation-fails-on-ubuntu-20-04-with-dpkg-error-processing-package-j
+sudo apt install openjdk-11-jdk
+sudo apt install jenkins
+
+
+user: adminuser password: 609Ridge#
+http://ec2-54-86-22-238.compute-1.amazonaws.com:8080/
