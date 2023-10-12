@@ -1,0 +1,397 @@
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+operator:x:11:0:operator:/root:/sbin/nologin
+ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
+nobody:x:99:99:Nobody:/:/sbin/nologin
+dbus:x:81:81:System message bus:/:/sbin/nologin
+nscd:x:28:28:NSCD Daemon:/:/sbin/nologin
+vcsa:x:69:69:virtual console memory owner:/dev:/sbin/nologin
+pcap:x:77:77::/var/arpwatch:/sbin/nologin
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+rpm:x:37:37::/var/lib/rpm:/sbin/nologin
+haldaemon:x:68:68:HAL daemon:/:/sbin/nologin
+apache:x:48:48:Apache:/var/www:/sbin/nologin
+ntp:x:38:38::/etc/ntp:/sbin/nologin
+xfs:x:43:43:X Font Server:/etc/X11/fs:/sbin/nologin
+exim:x:93:93::/var/spool/exim:/sbin/nologin
+sysadmin:x:500:500:Generic SysAdmin:/home/sysadmin:/bin/bash
+dj503531:x:504:10:Marty Yost:/home/dj503531:/bin/bash
+dj509089:x:512:10:Doug Eckert:/home/dj509089:/bin/bash
+dj202791:x:542:10:Charlie Wight:/home/dj202791:/bin/bash
+acausi:x:55556:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+bstelzer:x:55557:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+bstumbo:x:55558:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+cjohnston:x:55559:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+cnance:x:55560:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+csadowski:x:55561:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+dburns:x:55562:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+dbrinzac:x:55563:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+shirsch:x:55564:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+lschwartzwald:x:55565:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+strategic:x:55566:55568:NYPost Account:/post/ftp//strategic:/usr/sbin/ftponly
+elliman:x:55567:55569:NYPost Account:/post/ftp//elliman:/usr/sbin/ftponly
+phremote:x:55569:55571:NYPost Account:/post/ftp//phremote:/usr/sbin/ftponly
+photo:x:55570:55572:NYPost Account:/post/admin//photo:/usr/sbin/ftponly
+dkuntz:x:55571:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+vlouis:x:55572:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+jday:x:55575:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+vwill:x:55576:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+wsjcombo:x:55577:55579:NYPost Account:/post/ftp//wsjcombo:/usr/sbin/ftponly
+mac:x:55578:55580:NYPost Account:/post/ftp//mac:/usr/sbin/ftponly
+wireimage:x:55579:55777:NYPost Account:/post/phfeeds//wireimage:/usr/sbin/ftponly
+dticirc:x:55580:55582:NYPost Account:/post/ftp//dticirc:/usr/sbin/ftponly
+dcronin:x:55581:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+sfrancisco:x:55582:55584:NYPost Account:/post/ftp//sfrancisco:/usr/sbin/ftponly
+starmax:x:55583:55585:NYPost Account:/post/admin//starmax:/usr/sbin/ftponly
+interdist:x:55584:55586:NYPost Account:/post/ftp//interdist:/usr/sbin/ftponly
+inf:x:55585:55587:NYPost Account:/post/admin//inf:/usr/sbin/ftponly
+newsday:x:55586:55588:NYPost Account:/post/ftp//newsday:/usr/sbin/ftponly
+jalcorn:x:55587:55777:NYPost Account:/post/admin//inhouse:/usr/sbin/ftponly
+twiencis:x:55588:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+pmatthews:x:55589:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+gmiller:x:55590:55777:NYPost Account:/post/admin//inhouse:/usr/sbin/ftponly
+dmi:x:55591:55593:NYPost Account:/post/admin//dmi:/usr/sbin/ftponly
+lsullivan:x:55592:55777:NYPost Account:/post/admin//inhouse:/usr/sbin/ftponly
+cumberland:x:55593:55595:NYPost Account:/post/ftp//cumberland:/usr/sbin/ftponly
+pmartinka:x:55594:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+rexfeat:x:55595:55597:NYPost Account:/post/admin//rexfeat:/usr/sbin/ftponly
+jmesserschmidt:x:55596:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+oneview:x:55597:55599:NYPost Account:/post/ftp//oneview:/usr/sbin/ftponly
+lciniglio:x:55598:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+upi:x:55599:55601:NYPost Account:/post/admin//upi:/usr/sbin/ftponly
+nationalphoto:x:55600:55602:NYPost Account:/post/admin//nationalphoto:/usr/sbin/ftponly
+srv_pdfworkflow:x:55601:55603:NYPost Account:/post/ftp//srv_pdfworkflow:/usr/sbin/ftponly
+mmcdermott:x:55602:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+jstapen:x:55603:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+redispo:x:55604:55606:NYPost Account:/post/ftp//redispo:/usr/sbin/ftponly
+pub:x:55605:55607:NYPost Account:/post/ftp//pub:/usr/sbin/ftponly
+jbarth:x:55606:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+wsjreturns:x:55607:55609:NYPost Account:/post/ftp//wsjreturns:/usr/sbin/ftponly
+startraks:x:55608:55610:NYPost Account:/post/admin//startraks:/usr/sbin/ftponly
+it:x:55609:55611:NYPost Account:/post/ftp//it:/usr/sbin/ftponly
+argo:x:55610:55612:NYPost Account:/post/ftp//argo:/usr/sbin/ftponly
+tabcity:x:55611:55613:NYPost Account:/post/admin//tabcity:/usr/sbin/ftponly
+miamiremote:x:55612:55614:NYPost Account:/post/ftp//miamiremote:/usr/sbin/ftponly
+gmango:x:55613:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+citih:x:55614:55616:NYPost Account:/post/ftp//citih:/usr/sbin/ftponly
+splash:x:55615:55617:NYPost Account:/post/admin//splash:/usr/sbin/ftponly
+ramey:x:55616:55618:NYPost Account:/post/admin//ramey:/usr/sbin/ftponly
+dshapiro:x:55617:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+getty:x:55618:55777:NYPost Account:/post/phfeeds//getty:/usr/sbin/ftponly
+pittsburgh:x:55619:55621:NYPost Account:/post/ftp//pittsburgh:/usr/sbin/ftponly
+abaca:x:55620:55622:NYPost Account:/post/admin//abaca:/usr/sbin/ftponly
+itguest:x:55621:55623:Technology:/post/ftp//itguest:/usr/sbin/ftponly
+crachman:x:55622:55777:NYPost Account:/post/admin//inhouse:/usr/sbin/ftponly
+bancroft:x:55623:55625:NYPost Account:/post/admin//bancroft:/usr/sbin/ftponly
+crimsdb:x:55624:55626:NYPost Account:/post/ftp//crimsdb:/usr/sbin/ftponly
+century21:x:55625:55627:NYPost Account:/post/ftp//century21:/usr/sbin/ftponly
+hseidman:x:55626:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+nyp_re:x:55627:55629:NYPost Account:/post/ftp//nyp_re:/usr/sbin/ftponly
+tgaston:x:55628:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+sburnett:x:55629:55777:NYPost Account:/post/admin//inhouse:/usr/sbin/ftponly
+cwenzelberg:x:55630:55777:NYPost Account:/post/admin//inhouse:/usr/sbin/ftponly
+djremote:x:55631:55633:NYPost Account:/post/ftp//djremote:/usr/sbin/ftponly
+jspost:x:55632:55634:Jersulam Post:/post/ftp//jspost:/usr/sbin/ftponly
+timesledger:x:55633:55785:NYPost Account:/post/cng//timesledger:/usr/sbin/ftponly
+elippman:x:55634:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+thinton:x:55635:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+celebrityvibe:x:55636:55638:NYPost Account:/post/admin//celebrityvibe:/usr/sbin/ftponly
+inquire:x:55638:55640:NYPost Account:/post/ftp//inquire:/usr/sbin/ftponly
+circserv:x:55639:55641:NYPost Account:/post/ftp//circserv:/usr/sbin/ftponly
+circulation:x:55640:55642:NYPost Account:/post/ftp//circulation:/usr/sbin/ftponly
+denver:x:55641:55643:NYPost Account:/post/ftp//denver:/usr/sbin/ftponly
+rmiller:x:55642:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+ggrant:x:55643:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+bauer-griffin:x:55644:55646:NYPost Account:/post/admin//bauer-griffin:/usr/sbin/ftponly
+310pix:x:55645:55647:NYPost Account:/post/admin//310pix:/usr/sbin/ftponly
+newsftp:x:55646:55648:NYPost Account:/post/out//newsftp:/usr/sbin/ftponly
+everett:x:55647:55649:NYPost Account:/post/admin//everett:/usr/sbin/ftponly
+rkalfus:x:55648:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+sunsentinel:x:55649:55651:NYPost Account:/post/ftp//sunsentinel:/usr/sbin/ftponly
+gmorrison:x:55650:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+scripps:x:55651:55653:NYPost Account:/post/ftp//scripps:/usr/sbin/ftponly
+portland:x:55652:55654:NYPost Account:/post/ftp//portland:/usr/sbin/ftponly
+jwilliams:x:55653:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+moran:x:55654:55656:NYPost Account:/post/ftp//moran:/usr/sbin/ftponly
+citysub:x:55656:55658:NYPost Account:/post/ftp//citysub:/usr/sbin/ftponly
+fame:x:55658:55660:NYPost Account:/post/admin//fame:/usr/sbin/ftponly
+wpn:x:55659:55661:NYPost Account:/post/admin//wpn:/usr/sbin/ftponly
+x17:x:55661:55663:NYPost Account:/post/admin//x17:/usr/sbin/ftponly
+wcarrington:x:55662:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+wlopez:x:55663:55777:NYPost Account:/post/admin//inhouse:/usr/sbin/ftponly
+Rsachs:x:55664:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+bxtimes:x:55665:55785:NYPost Account:/post/cng//bxtimes:/usr/sbin/ftponly
+tbeckwith:x:55666:55777:NYPost Account:/post/admin//inhouse:/usr/sbin/ftponly
+mmcloughlin:x:55667:55777:NYPost Account:/post/admin//inhouse:/usr/sbin/ftponly
+globe:x:55668:55670:NYPost Account:/post/admin//globe:/usr/sbin/ftponly
+spremote:x:55669:55671:NYPost Account:/post/ftp//spremote:/usr/sbin/ftponly
+kit:x:55670:55672:NYPost Account:/post/ftp//kit:/usr/sbin/ftponly
+polaris:x:55671:55673:NYPost Account:/post/admin//polaris:/usr/sbin/ftponly
+epa:x:55672:55777:NYPost Account:/post/phfeeds//epa:/usr/sbin/ftponly
+jpost:x:55673:55675:NYPost Account:/post/ftp//jpost:/usr/sbin/ftponly
+onlineads:x:55674:55676:NYPost Account:/post/ftp//onlineads:/usr/sbin/ftponly
+malibu:x:55675:55677:NYPost Account:/post/admin//malibu:/usr/sbin/ftponly
+landov:x:55676:55678:NYPost Account:/post/admin//landov:/usr/sbin/ftponly
+legal:x:55677:55679:NYPost Account:/post/ftp//legal:/usr/sbin/ftponly
+wenn:x:55678:55680:NYPost Account:/post/admin//wenn:/usr/sbin/ftponly
+tollbrothers:x:55679:55681:NYPost Account:/post/ftp//tollbrothers:/usr/sbin/ftponly
+sublet:x:55680:55682:NYPost Account:/post/ftp//sublet:/usr/sbin/ftponly
+sgottfries:x:55681:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+video:x:55682:55684:NYPost Account:/post/ftp//video:/usr/sbin/ftponly
+corcoran:x:55683:55685:NYPost Account:/post/ftp//corcoran:/usr/sbin/ftponly
+houston:x:55684:55686:NYPost Account:/post/ftp//houston:/usr/sbin/ftponly
+clife:x:55685:55785:NYPost Account:/post/cng//clife:/usr/sbin/ftponly
+ssands:x:55686:55688:NYPost Account:/post/admin//ssands:/usr/sbin/ftponly
+gamma:x:55687:55689:NYPost Account:/post/admin//gamma:/usr/sbin/ftponly
+filmmagic:x:55688:55690:NYPost Account:/post/admin//filmmagic:/usr/sbin/ftponly
+fluffy:x:55689:55691:NYPost Account:/post/ftp//fluffy:/usr/sbin/ftponly
+pphotos:x:55690:55692:NYPost Account:/post/admin//pphotos:/usr/sbin/ftponly
+asco:x:55691:55693:NYPost Account:/post/ftp//asco:/usr/sbin/ftponly
+brim:x:55692:55694:NYPost Account:/post/admin//brim:/usr/sbin/ftponly
+boston:x:55693:55695:NYPost Account:/post/ftp//boston:/usr/sbin/ftponly
+acepix:x:55694:55696:NYPost Account:/post/admin//acepix:/usr/sbin/ftponly
+djohnston:x:55695:55697:NYPost Account:/post/admin//djohnston:/usr/sbin/ftponly
+wfarrington:x:55696:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+smtell:x:55697:55777:NYPost Account:/post/admin//inhouse:/usr/sbin/ftponly
+wsjguest:x:55698:55700:Wall Street Journal:/post/ftp//wsjguest:/usr/sbin/ftponly
+cngdaily:x:55699:55701:NYPost Account:/post/ftp//cngdaily:/bin/bash
+pmcmullan:x:55700:55702:NYPost Account:/post/admin//pmcmullan:/usr/sbin/ftponly
+pcsh:x:55701:55703:NYPost Account:/post/ftp//pcsh:/usr/sbin/ftponly
+rpress:x:55702:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+production:x:55703:55705:NYPost Account:/post/ftp//production:/usr/sbin/ftponly
+photopass:x:55704:55706:NYPost Account:/post/admin//photopass:/usr/sbin/ftponly
+cng:x:55705:55707:NYPost Account:/post/ftp//cng:/usr/sbin/ftponly
+nmiller:x:55706:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+nypostimages:x:55707:55709:NYPost Account:/post/admin//nypostimages:/usr/sbin/ftponly
+fbryant:x:55708:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+cinemasrc:x:55709:55711:NYPost Account:/post/ftp//cinemasrc:/usr/sbin/ftponly
+mstorms:x:55710:55712:NYPost Account:/post/admin//mstorms:/usr/sbin/ftponly
+jweisbord:x:55711:55777:NYPost Account:/post/admin//inhouse:/usr/sbin/ftponly
+stribling:x:55712:55714:NYPost Account:/post/ftp//stribling:/usr/sbin/ftponly
+nypguest:x:55713:55715:NYPost Account:/post/ftp//nypguest:/usr/sbin/ftponly
+cngpbs:x:55714:55716:NYPost Account:/post/ftp//cngpbs:/usr/sbin/ftponly
+baltsun:x:55715:55717:NYPost Account:/post/ftp//baltsun:/usr/sbin/ftponly
+pmena:x:55716:55718:NYPost Account:/post/admin//pmena:/usr/sbin/ftponly
+lribeiro:x:55717:55777:NYPost Account:/post/admin//inhouse:/usr/sbin/ftponly
+thirdparty:x:55718:55720:NYPost Account:/post/ftp//thirdparty:/usr/sbin/ftponly
+tacct:x:55719:55721:NYPost Account:/post/ftp//tacct:/usr/sbin/ftponly
+turnkey:x:55720:55722:NYPost Account:/post/ftp//turnkey:/usr/sbin/ftponly
+jzelevansky:x:55721:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+laremote:x:55722:55724:NYPost Account:/post/ftp//laremote:/usr/sbin/ftponly
+londonfeat:x:55723:55725:NYPost Account:/post/admin//londonfeat:/usr/sbin/ftponly
+outsourceamerica:x:55725:55727:NYPost Account:/post/ftp//outsourceamerica:/usr/sbin/ftponly
+jpaing:x:55726:55728:Jack Paing:/post/ftp//jpaing:/usr/sbin/ftponly
+jszenes:x:55727:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+jwynn:x:55728:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+verafast:x:55729:55731:NYPost Account:/post/ftp//verafast:/usr/sbin/ftponly
+finalpixx:x:55730:55732:NYPost Account:/post/admin//finalpixx:/usr/sbin/ftponly
+fmicelotta:x:55731:55733:NYPost Account:/post/admin//fmicelotta:/usr/sbin/ftponly
+mavrix:x:55732:55734:NYPost Account:/post/admin//mavrix:/usr/sbin/ftponly
+photoftp:x:55733:55735:NYPost Account:/post/admin//photoftp:/usr/sbin/ftponly
+msofronski:x:55734:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+dwilson:x:55735:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+dboyle:x:55736:55738:NYPost Account:/post/admin//dboyle:/usr/sbin/ftponly
+infinity:x:55737:55739:NYPost Account:/post/ftp//infinity:/usr/sbin/ftponly
+padao:x:55738:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+jolson:x:55739:55741:ADP:/post/ftp//jolson:/usr/sbin/ftponly
+mbpictures:x:55740:55742:NYPost Account:/post/admin//mbpictures:/usr/sbin/ftponly
+circ2009:x:55741:55743:Circulation:/post/ftp//circ2009:/usr/sbin/ftponly
+pagesix:x:55742:55744:NYPost Account:/post/ftp//pagesix:/usr/sbin/ftponly
+sipa:x:55743:55745:NYPost Account:/post/admin//sipa:/usr/sbin/ftponly
+tlphotos:x:55744:55746:NYPost Account:/post/ftp//tlphotos:/usr/sbin/ftponly
+corbis:x:55745:55747:NYPost Account:/post/admin//corbis:/usr/sbin/ftponly
+dherrick:x:55746:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+lareview:x:55747:55749:NYPost Account:/post/ftp//lareview:/usr/sbin/ftponly
+sportsphotos:x:55748:55777:NYPost Account:/post/admin//sportsphotos:/usr/sbin/ftponly
+nmwires:x:55749:55751:NYPost Account:/post/ftp//nmwires:/usr/sbin/ftponly
+talk2rap:x:55750:55752:NYPost Account:/post/ftp//talk2rap:/usr/sbin/ftponly
+rkopstein:x:55751:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+mizona:x:55752:55754:NYPost Account:/post/ftp//mizona:/usr/sbin/ftponly
+mwalters:x:55753:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+zuma:x:55754:55756:NYPost Account:/post/admin//zuma:/usr/sbin/ftponly
+photolink:x:55755:55757:NYPost Account:/post/admin//photolink:/usr/sbin/ftponly
+buzzfoto:x:55756:55758:NYPost Account:/post/admin//buzzfoto:/usr/sbin/ftponly
+bloomberg:x:55757:55759:NYPost Account:/post/admin//bloomberg:/usr/sbin/ftponly
+drentas:x:55758:55777:NYPost Account:/post/admin//inhouse:/usr/sbin/ftponly
+cnglocal:x:55759:55761:NYPost Account:/post/ftp//cnglocal:/usr/sbin/ftponly
+merlin:x:55760:55762:NYPost Account:/post/admin//merlin:/usr/sbin/ftponly
+emd:x:55761:55763:NYPost Account:/post/ftp//emd:/usr/sbin/ftponly
+Zmangold:x:55762:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+hhalasy:x:55763:55777:NYPost Account:/post/admin//inhouse:/usr/sbin/ftponly
+adp:x:55764:55766:NYPost Account:/post/ftp//adp:/usr/sbin/ftponly
+peconic:x:55765:55767:NYPost Account:/post/ftp//peconic:/usr/sbin/ftponly
+kcoughlin:x:55766:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+rsachs:x:55767:55777:NYPost Account:/post/admin//freelance:/usr/sbin/ftponly
+newsdirect:x:55768:55770:NYPost Account:/post/ftp//newsdirect:/usr/sbin/ftponly
+retna:x:55769:55771:NYPost Account:/post/admin//retna:/usr/sbin/ftponly
+pisa:x:55770:55772:NYPost Account:/post/ftp//pisa:/usr/sbin/ftponly
+pcn:x:55771:55773:NYPost Account:/post/admin//pcn:/usr/sbin/ftponly
+cheishman:x:55772:55774:NYPost Account:/post/ftp//cheishman:/usr/sbin/ftponly
+dakota:x:55773:55775:NYPost Account:/post/ftp//dakota:/usr/sbin/ftponly
+wightc:x:55774:55776:NYPost Account:/post/ftp//wightc:/usr/sbin/ftponly
+peersync:x:55775:55777:NYPost Account:/post//admin2:/bin/bash
+psout:x:55776:55778:Peersync out:/post//out:/usr/sbin/ftponly
+peersync2:x:55777:55779:Peersync photofeeds:/post//phfeeds:/usr/sbin/ftponly
+nestseekers:x:55778:55780:NYPost Account:/post/ftp//nestseekers:/usr/sbin/ftponly
+newscore:x:55779:55781::/post/ftp//newscore:/usr/sbin/ftponly
+mailnull:x:47:47::/var/spool/mqueue:/sbin/nologin
+smmsp:x:51:51::/var/spool/mqueue:/sbin/nologin
+latimespix:x:55780:55782:NYPost Account:/post/admin//latimespix:/usr/sbin/ftponly
+postads:x:55781:55783:NYPost Account:/post/peerads//postads:/usr/sbin/ftponly
+demotix:x:55782:55784:NYPost Account:/post/admin//demotix:/usr/sbin/ftponly
+peercng:x:55783:55785:Peercng:/post//cng2:/bin/bash
+svc_finalcutserver:x:55784:55786:svc_finalcutserver :/ftp//dj_video:/usr/sbin/ftponly
+dj_video:x:55785:55787:dj_video:/ftp//dj_video:/usr/sbin/ftponly
+golmobile:x:55786:55788:NYPost Account:/post/ftp//golmobile:/usr/sbin/ftponly
+wsjcmy:x:55787:55789:Account for Will Lugg:/ftp//wsjcmy:/usr/sbin/ftponly
+peerads:x:55788:55790:peersync ads account:/post//peerads2:/bin/bash
+temp1:x:55789:55791:NYPost Account:/post/ftp//temp1:/usr/sbin/ftponly
+eochome:x:55790:55792:NYPost Account:/post/ftp//eochome:/usr/sbin/ftponly
+cngnyp:x:55791:55785:NYpost Account:/post/cng//cngnyp:/usr/sbin/ftponly
+smcsftp01:x:55792:55794:Standard FTP account:/ftp/users//smcsftp01:/usr/sbin/ftponly
+smcsftp02:x:55793:55795:Standard FTP account:/ftp/users//smcsftp02:/usr/sbin/ftponly
+smcsftp03:x:55794:55796:Standard FTP account:/ftp/users//smcsftp03:/usr/sbin/ftponly
+smcsftp04:x:55795:55797:Standard FTP account:/ftp/users//smcsftp04:/usr/sbin/ftponly
+smcsftp05:x:55796:55798:Standard FTP account:/ftp/users//smcsftp05:/usr/sbin/ftponly
+Ocala:x:55797:55799:Standard ftp accounts:/post/ftp//Ocala:/usr/sbin/ftponly
+Sarasota:x:55798:55800:Standard ftp accounts:/post/ftp//Sarasota:/usr/sbin/ftponly
+SonyEreaderABC:x:55799:55801:Standard Ftp Account:/post/ftp//SonyEreaderABC:/usr/sbin/ftponly
+Schwab_user:x:55800:55802:Schwab_user:/ftp/SmartMoney//Schwab_user:/usr/sbin/ftponly
+TRP_user:x:55801:55803:TRP_user:/ftp/SmartMoney//TRP_user:/usr/sbin/ftponly
+ampvid:x:55802:55804:ampvid:/ftp/SmartMoney//ampvid:/usr/sbin/ftponly
+CustomS:x:55803:55805:CustomS:/ftp/SmartMoney//CustomS:/usr/sbin/ftponly
+agoudar:x:55804:55806:NYPost Account:/post/ftp//agoudar:/usr/sbin/ftponly
+CSchwab:x:55805:55807:CSchwab:/ftp/SmartMoney//CSchwab:/usr/sbin/ftponly
+Texterity:x:55806:55808:Texterity:/ftp/SmartMoney//Texterity:/usr/sbin/ftponly
+brandarc:x:55807:55809:Brand Architecture:/post/ftp//brandarc:/usr/sbin/ftponly
+eloqua_in:x:55808:55810:FIS TNT group:/post/ftp//Eloqua_in:/usr/sbin/ftponly
+eloqua_out:x:55809:55811:FIS TNT group:/post/ftp//eloqua_out:/usr/sbin/ftponly
+adstar:x:55810:55812:Luis Lopez Adstar:/post/ftp//adstar:/sbin/nologin
+statsinc:x:55811:55813:NYPost Account:/post/ftp//statsinc:/usr/sbin/ftponly
+stats:x:55812:55814:stats user:/post/ftp//stats:/usr/sbin/ftponly
+naplesdaily:x:55813:55815:ShaTonga Fountain:/post/ftp//naplesdaily:/usr/sbin/ftponly
+DTI_General:x:55815:55816:DTI_General:/post/ftp//DTI_General:/usr/sbin/ftponly
+brooklyn1:x:55816:55785:brooklyn1:/ftp/cng//brooklyn1:/usr/sbin/ftponly
+brooklyn2:x:55817:55785:brooklyn2:/ftp/cng//brooklyn2:/usr/sbin/ftponly
+brooklyn3:x:55818:55785:brooklyn3:/ftp/cng//brooklyn3:/usr/sbin/ftponly
+tln:x:55819:55785:tln:/post/cng//tln:/usr/sbin/ftponly
+tls:x:55820:55785:tls:/post/cng//tls:/usr/sbin/ftponly
+tlw:x:55821:55785:tlw:/post/cng//tlw:/usr/sbin/ftponly
+onlprod:x:55822:55822:Online Production:/post/ftp//onlprod:/usr/sbin/ftponly
+mitchell_news:x:55823:55823:Mitchell News:/post/ftp//mitchell_news:/usr/sbin/ftponly
+storage:x:55824:55824:Craig Fonseca:/post/ftp//storage:/usr/sbin/ftponly
+PcfHdFile:x:55825:55825:NYPost Account:/post/ftp//PcfHdFile:/usr/sbin/ftponly
+tmpftp:x:55826:55826:Temp Account1:/ftp/tmpftp:/usr/sbin/ftponly
+CrowdFusion:x:55827:55827:Standard Ftp Account:/ftp/daily/CrowdFusion:/usr/sbin/ftponly
+Reuters:x:55828:55828:Standard Ftp Account:/ftp/daily/Reuters:/usr/sbin/ftponly
+AP:x:55829:55829:Standard Ftp Account:/ftp/daily/AP:/usr/sbin/ftponly
+INF:x:55830:55830:Standard Ftp Account:/ftp/daily/INF:/usr/sbin/ftponly
+Ramsey:x:55831:55831:Standard Ftp Account:/ftp/daily/Ramsey:/usr/sbin/ftponly
+Getty:x:55832:55832:Standard Ftp Account:/ftp/daily/Getty:/usr/sbin/ftponly
+samsung:x:55833:55833:samsung:/post/ftp/samsung:/usr/sbin/ftponly
+splash1:x:55834:55834:Standard Ftp Account:/ftp/daily/splash1:/usr/sbin/ftponly
+smartmo:x:55835:55835:Janee Clark:/ftp/SmartMoney/smartmo:/usr/sbin/ftponly
+EEngine:x:55836:55786:EEngine:/ftp//dj_video:/usr/sbin/ftponly
+nypreports:x:55837:55837:Standard FTP accounts:/post/ftp/nypreports:/usr/sbin/ftponly
+smartftp:x:55838:55838:For John Borowy:/ftp/SmartMoney/smartftp:/usr/sbin/ftponly
+forexadm:x:55839:55840:Standard FTP account:/ftp/users//forexadm:/usr/sbin/ftponly
+forex1:x:55840:55841:Standard FTP account:/ftp/users/forexadm//forex1:/usr/sbin/ftponly
+forex2:x:55841:55842:Standard FTP account:/ftp/users/forexadm//forex2:/usr/sbin/ftponly
+editorial:x:55844:55785: Editorial submissions :/ftp/cng//editorial:/usr/sbin/ftponly
+carib:x:55845:55785: carib dept ftp :/ftp/cng//carib:/usr/sbin/ftponly
+tequila:x:55846:55785: Reporter :/ftp/cng//tequila:/usr/sbin/ftponly
+peterkin:x:55847:55785: Reporter :/ftp/cng//peterkin:/usr/sbin/ftponly
+seitu:x:55848:55785: Reporter :/ftp/cng//seitu:/usr/sbin/ftponly
+tangerine:x:55849:55785: Reporter :/ftp/cng//tangerine:/usr/sbin/ftponly
+donovan:x:55850:55785: Reporter :/ftp/cng//donovan:/usr/sbin/ftponly
+kwameb:x:55851:55785: Reporter :/ftp/cng//kwameb:/usr/sbin/ftponly
+chuck:x:55852:55785: Reporter :/ftp/cng//chuck:/usr/sbin/ftponly
+donna:x:55853:55785: Reporter :/ftp/cng//donna:/usr/sbin/ftponly
+teresar:x:55854:55785: Reporter :/ftp/cng//teresar:/usr/sbin/ftponly
+vinette:x:55855:55785: Reporter :/ftp/cng//vinette:/usr/sbin/ftponly
+tedlevin:x:55856:55785: Reporter :/ftp/cng//tedlevin:/usr/sbin/ftponly
+farrington:x:55857:55785: Reporter :/ftp/cng//farrington:/usr/sbin/ftponly
+clydejones:x:55858:55785: Reporter :/ftp/cng//clydejones:/usr/sbin/ftponly
+nelson:x:55859:55785: Reporter :/ftp/cng//nelson:/usr/sbin/ftponly
+caribtemp:x:55860:55785: Reporter :/ftp/cng//caribtemp:/usr/sbin/ftponly
+roz:x:55861:55785: Reporter :/ftp/cng//roz:/usr/sbin/ftponly
+zakia:x:55862:55785: Reporter :/ftp/cng//zakia:/usr/sbin/ftponly
+31311919:x:55863:55785: PBS Auto FTP tearsheet request :/ftp/cng//31311919:/usr/sbin/ftponly
+advtemp:x:55864:55785: Sales Dept FTP folder :/ftp/cng//advtemp:/usr/sbin/ftponly
+family:x:55865:55785: Family Department main ftp :/ftp/cng//family:/usr/sbin/ftponly
+sales:x:55866:55785: Sales Dept FTP :/ftp/cng//sales:/usr/sbin/ftponly
+bronx:x:55867:55785: Bronx times Incoming FTP :/ftp/cng//bronx:/usr/sbin/ftponly
+nypost:x:55868:55785: ADVList file transfer to NYPost :/ftp/cng//nypost:/usr/sbin/ftponly
+bgtemp:x:55869:55785: Barbra Goldstien - Remote user transfer ftp to Sales :/ftp/cng//bgtemp:/usr/sbin/ftponly
+POSTXFER:x:55870:55870:NYPost Account:/post/ftp//POSTXFER:/usr/sbin/ftponly
+promos:x:55871:55871:NYPost Account:/post/ftp//promos:/usr/sbin/ftponly
+cngproduction:x:55872:55785:Production Incoming FTP account:/ftp/cng//cngproduction:/usr/sbin/ftponly
+mwgame:x:55874:55874:Account for mail logs:/post/ftp/mwgame:/usr/sbin/ftponly
+Tampatri:x:55875:55875:NYPost Account:/post/ftp//Tampatri:/usr/sbin/ftponly
+gfirevals:x:55876:55876:Push account for GFI:/ftp/users/gfirevals:/usr/sbin/ftponly
+gfipull:x:55877:55877:Pull for GFI:/ftp/users/gfirevals:/usr/sbin/ftponly
+emailpref:x:55878:55878:Self-Service:/ftp/users//emailpref:/usr/sbin/ftponly
+edgilreports:x:55879:55879:edgilreports:/ftp/users//edgilreports:/usr/sbin/ftponly
+splunk:x:55880:55880:Splunk Server:/opt/splunk:/bin/bash
+Yieldex:x:55881:55881:Yieldex:/post/ftp//Yieldex:/usr/sbin/ftponly
+rosenyc:x:55884:55884:NY Post account:/post/ftp//rosenyc:/usr/sbin/ftponly
+wsjerenew:x:55885:55885:For John Borowy:/ftp/users//wsjerenew:/usr/sbin/ftponly
+DesktopAppAdmin:x:55886:55886:Project DJ Downloadable Desktop App:/ftp/users//DesktopAppAdmin:/usr/sbin/ftponly
+DesktopApp1:x:55887:55887:Project DJ Downloadable Desktop App:/ftp/users/DesktopAppAdmin//DesktopApp1:/usr/sbin/ftponly
+DesktopApp2:x:55888:55888:Project DJ Downloadable Desktop App:/ftp/users/DesktopAppAdmin//DesktopApp2:/usr/sbin/ftponly
+trajectoryinc:x:55889:55889:NY Post account:/post/ftp//trajectoryinc:/usr/sbin/ftponly
+classgeebo:x:55891:55891:Reporter:/post/cng//classgeebo:/usr/sbin/ftponly
+mediapunch:x:55892:55892:mediapunch:/post/admin/mediapunch:/usr/sbin/ftponly
+openaccess:x:55893:55893:Open_Access:/ftp/users/openaccess:/usr/sbin/ftponly
+Trowe:x:55895:55895:Trowe:/ftp/SmartMoney//Trowe:/usr/sbin/ftponly
+TWSJPICS:x:55896:55896:Standard FTP account:/ftp/users//TWSJPICS:/usr/sbin/ftponly
+DowJonesUI:x:55897:55897:Standard FTP account:/ftp/users//DowJonesUI:/usr/sbin/ftponly
+dsolutions:x:55898:55898:Standard FTP account:/ftp/users//dsolutions:/usr/sbin/ftponly
+tntftphr:x:55899:55899:Jason Anderson:/ftp/users//Jason_Anderson:/usr/sbin/ftponly
+WSJDJConferences:x:55900:55900:WSJDJConferences:/ftp/users//WSJDJConferences:/usr/sbin/ftponly
+Fidelity:x:55901:55901:FIDELITY:/ftp/users//Fidelity:/usr/sbin/ftponly
+SCSSalesInfo:x:55902:55902:SCSSALESINFO:/ftp/users//SCSSalesInfo:/usr/sbin/ftponly
+sportsnetwork:x:55903:55903:NY Post Acccount:/post/ftp//sportsnetwork:/usr/sbin/ftponly
+onlineprod:x:55904:55904:onlineprod:/ftp/users//onlineprod:/usr/sbin/ftponly
+orlando:x:55905:55905:Circulation:/ftp/users//orlando:/usr/sbin/ftponly
+strongm:x:55906:55906:Circulation:/ftp/users//strongm:/usr/sbin/ftponly
+mediacon:x:55907:55907:Mediacon:/ftp/users//mediacon:/usr/sbin/ftponly
+merlinone:x:55909:55909:NYPost Account:/post/phfeeds2//merlinone:/usr/sbin/ftponly
+nypostvideo:x:55910:55910:NYPost Account:/post/phfeeds//nypostvideo:/usr/sbin/ftponly
+peersync3:x:55911:55911:Peersync users for merlinone:/post/phfeeds2:/usr/sbin/ftponly
+baltsun2:x:55912:55912:baltsun2:/ftp/users//baltsun2:/usr/sbin/ftponly
+dbdpix:x:55914:55777:News Agency:/post/admin//dbdpix:/usr/sbin/ftponly
+sports:x:55916:55916:sports account:/post/admin//sports:/usr/sbin/ftponly
+nysportsday:x:55917:55917:nysportsday account:/post/admin//nysportsday:/usr/sbin/ftponly
+akmgsi:x:55918:55777:Photo Service:/post/admin//akmgsi:/usr/sbin/ftponly
+dj134854:x:55923:10:Elijah Carter:/home/dj134854:/bin/bash
+starpix:x:55924:55924:Standard FTP account Dave Johnson:/post/admin/starpix:/usr/sbin/ftponly
+mega:x:55925:55925:NYPost Account:/post/admin//mega:/usr/sbin/ftponly
+epanews:x:55926:55926:EPA post will monitor:/post/admin//epanews:/usr/sbin/ftponly
+dropbox:x:55927:55927:NY Post Dropbox Account:/post/ftp//dropbox:/usr/sbin/ftponly
+idxsvc:x:55928:55928:Tideway discovery ID:/home/idxsvc:/bin/bash
+ne226552:x:1226552:10:Vinodini Nagaraj:/home/ne226552:/bin/bash
+ne225555:x:1225555:10:Madhusudan Kumar:/home/ne225555:/bin/bash
+ne225325:x:1225325:10:Shaliny Ravindranath:/home/ne225325:/bin/bash
+ne226550:x:1226550:10:Karthik Puttaswamy:/home/ne226550:/bin/bash
+ne228562:x:1228562:10:Bhautik Karkar:/home/ne228562:/bin/bash
+dj310558:x:1310558:10:Paul Robinson:/home/dj310558:/bin/bash
+pwadmin:x:55929:55929:Password Admin:/home/pwadmin:/bin/bash
+nypreuters:x:55930:55839:NYPost Wire Reuters Account:/post/nypwireadmin//nypreuters:/usr/sbin/ftponly
+ne230046:x:1230046:1230046:Nihaz Majeed:/home/ne230046:/bin/bash
+avahi-autoipd:x:100:102:avahi-autoipd:/var/lib/avahi-autoipd:/sbin/nologin
+rpc:x:32:32:Portmapper RPC user:/:/sbin/nologin
+rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin
+nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin
+ne230048:x:130048:10:Santosh Dewangan:/home/ne230048:/bin/bash
+ne230045:x:130045:10:Mouliswara Reddy:/home/ne230045:/bin/bash
+swns:x:55931:55931:NYPost Account:/post/admin//swns:/usr/sbin/ftponly
+ne237639:x:1237639:10:Rajagopalan AK:/home/ne237639:/bin/bash
+svccloudscape:x:55932:55932:svccloudscape service account:/home/svccloudscape:/bin/bash
+alamylivenews:x:55933:55933:NYPost Account:/post/admin//alamylivenews:/usr/sbin/ftponly

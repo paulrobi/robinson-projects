@@ -1,0 +1,35 @@
+HOST=virnypftp
+REG=`curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/'`
+Iid=`curl http://169.254.169.254/latest/meta-data/instance-id`
+ASG=`aws ec2 describe-instances --instance-ids $Iid --region $REG |grep asg|cut -d '"' -f4`
+#Vid=`aws ec2 describe-volumes --region $REG --filters Name=tag:vollockname,Values=${HOST}-vol |grep VolumeId|cut -d'"' -f4|head -1`
+#aws ec2 attach-volume --region $REG --volume-id $Vid --instance-id $Iid --device /dev/xvdf
+#sleep 60
+#while ! pvscan|grep dbvg
+#do
+#  printf "not attached\n"
+#  sleep 10
+#done
+
+51  aws --version
+   52  . .bash_profile
+   53  aws --version
+   54  aws ec2 attach-volume --region $REG --volume-id $Vid --instance-id $Iid --device /dev/xvdf
+   55  HOST=virnypftp
+   56  REG=`curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/\(.*\)[a-z]/\1/'`
+   57  Iid=`curl http://169.254.169.254/latest/meta-data/instance-id`
+   58  Vid=`aws ec2 describe-volumes --region $REG --filters Name=tag:vollockname,Values=${HOST}-vol |grep VolumeId|cut -d'"' -f4|head -1`
+   59  aws ec2 attach-volume --region $REG --volume-id $Vid --instance-id $Iid --device /dev/xvdf
+   60  lsblk
+   61   sudo file -s /dev/nvme1n1
+   62  lsblk -f
+   63  yum install xfsprogs
+   64  gdisk /dev/nvme1n1
+   65  lsblk -f
+   66  pvcreate /dev/nvme1n1p1
+   67  vgcreate ftpvg /dev/nvme1n1p1
+   68  vgs
+   69   lvcreate -l 100%FREE -n ftplv ftpvg
+   70  mkfs -t xfs /dev/ftpvg/ftplv
+   71  lsblk -f
+   72  history

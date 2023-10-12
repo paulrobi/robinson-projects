@@ -1,0 +1,11 @@
+/dev/rootvg/rootvol     /                       ext3    defaults        1 1
+LABEL=/boot             /boot                   ext3    defaults        1 2
+tmpfs                   /dev/shm                tmpfs   defaults        0 0
+devpts                  /dev/pts                devpts  gid=5,mode=620  0 0
+sysfs                   /sys                    sysfs   defaults        0 0
+proc                    /proc                   proc    defaults        0 0
+/dev/rootvg/swapvol     swap                    swap    defaults        0 0
+/dev/rootvg/swapvol02   swap                    swap    defaults        0 0
+/dev/mapper/datavg-ftpvol        /ftp           ext3     defaults        1 2
+/dev/mapper/datavg-postvol      /post           ext3     defaults        1 2
+#/dev/rootvg/isovol     /ISO                    ext3    defaults        1 2

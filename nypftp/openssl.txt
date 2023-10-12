@@ -1,0 +1,13 @@
+createaccountsauto.sh:     openssl enc -d -aes-256-ecb -in ${workdirectory}/${encfile} -out ${workdirectory}/${encfile}-unencrypted.txt -K ${s3key}
+userhome_sanitycheck.sh:        openssl enc -d -aes-256-ecb -in $file -out $file.out -K ${s3key}
+
+
+s3key=$(cat /etc/pipelines3key.txt)
+
+cat /etc/pipelines3key.txt
+65 characters
+
+new = XyBu6FX3fNvyiKs90Fhu17TDzvHeMEo4yzEyY1wnLKXxZv14Fm05M6AxojJDYjNn1
+cat /etc/pipelines3key.txt |gpg --passphrase-fd 0 --batch --yes -c passwd.txt
+
+cat /etc/pipelines3key.txt | gpg   --passphrase-fd 0 --batch --yes /home/daqbuild/vsftpd_cer.key-PROD.gpg

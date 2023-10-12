@@ -1,0 +1,50 @@
+CLUSTER = "XXXX-${environment}"
+SERVICE = "XXXX"
+
+env.account = resolveAccount('stag', environment)
+
+pipeline {
+
+  agent {
+    docker {
+      label account
+      image 'artifactory.dowjones.io:5003/XXX/XXX/jenkins-node-utils:69'
+      registryUrl 'https://artifactory.dowjones.io:5003'
+      registryCredentialsId 'XXXX'
+      args '--network host'
+    }
+  }
+
+  options {
+    ansiColor('xterm')
+  }
+
+  stages {
+    stage('Deploy') {
+      steps {
+        script {
+          sh """
+            ecs-deploy \
+              --verbose \
+              --cluster ${CLUSTER} \
+              --service ${SERVICE} \
+              --stack ${stack} \
+              --region ${region} \
+              --build-number ${build_number_NUMBER}
+          """
+        }
+      }
+    }
+  }
+  post {
+	  success {
+				slackSend(channel: "XXXX", color: "good", message: "Action: :rocket: \nStatus: :check: \nService: ${env.JOB_NAME}\nRegion: ${region}\nStack: ${stack}\nBuild: ${build_number_NUMBER}\n\nCC: @uriel.contreras")
+			}
+	  failure {
+				slackSend(channel: "XXXX", color: "danger", message: "Action: :rocket: \nStatus: :x: \nService: ${env.JOB_NAME}\nRegion: ${region}\nStack: ${stack}\nBuild: ${build_number_NUMBER}\n\nCC: @uriel.contreras")
+				}
+      unstable {
+				slackSend(channel: "XXXX", color: "warning", message: "Action: :rocket: \nStatus: :warning: \nService: ${env.JOB_NAME}\nRegion: ${region}\nStack: ${stack}\nBuild: ${build_number_NUMBER}\n\nCC: @uriel.contreras")
+				}
+    }
+}

@@ -1,0 +1,44 @@
+pipeline {
+  agent {
+    label 'entstagbilling'
+  }
+  environment {
+    REGISTRY = 'https://103409066460.dkr.ecr.us-east-1.amazonaws.com'
+    REPO     = 'https://github.dowjones.net/BillingApplications/cibs_linux_deploy.git'
+    ECSREPO  = 'djis-cibs-api'
+  }
+  options {
+    ansiColor('xterm')
+  }
+  stages {
+    stage ('Checkout') {
+      steps {
+        deleteDir()
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']],
+          userRemoteConfigs: [[url: REPO]]]
+          )
+      }
+    }
+    stage ('Build') {
+      steps {
+        script {
+        image = docker.build(
+          ECSREPO,
+          "--network=host --build-arg build_number=\${BUILD_NUMBER} ."
+          )
+        }
+      }
+    }
+    stage ('Publish') {
+      steps {
+        script {
+          sh "eval \$(aws ecr get-login --no-include-email --region us-east-1 | sed 's|https://||')"
+          docker.withRegistry(REGISTRY) {
+            image.push()
+            image.push(env.BUILD_NUMBER)
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+anonymous_enable=NO
+local_enable=YES
+use_localtime=YES
+write_enable=YES
+local_umask=002
+dirmessage_enable=YES
+xferlog_enable=YES
+connect_from_port_20=YES
+xferlog_std_format=YES
+ftpd_banner=NOTE: We are asking our users to please call our Enterprise Operations Center at +1 (609) 520-7677, Option 9, for important information regarding your login to our site.  If you have called, you do not need to call again.  Thank you.
+chroot_local_user=YES
+passwd_chroot_enable=YES
+listen=YES
+
+pam_service_name=vsftpd
+userlist_enable=YES
+tcp_wrappers=YES
+listen_address=10.240.7.61
