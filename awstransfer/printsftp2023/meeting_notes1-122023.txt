@@ -1,0 +1,15 @@
+
+1. aws costs  -dependent on mount of data (3/4 below)
+2. globalsftp option but unable to use current file management crons. Move fileX to multiple user difrectories, etc. purge files based on conditions
+
+3. (paul) ftp xfer log - amount of data + accounts which did not login in past x-days on current ftp
+4. (paul) sftp xfter log - amount of data + accounts which did not login in past x-days on current sftp
+   data between thursday evening - friday evening more
+
+ftp/vs sftp. Only FAD using ftp
+
+5. perl scripts -(paul) build ec2 test instane with perl scripts/modules for (bill) to review
+6. distribute current userlist
+
+(bill) ProImage Option - has hosted sftp. Bill to get refreshed quote 
+SolarWinds (windows app) - option. There may also be a linux option
